@@ -18,22 +18,33 @@ namespace backofficeTest
             var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
                 Headless = false,
-                SlowMo = 20000
+                SlowMo = 5000,
             });
             return browser;
         }
 
-        public async Task<bool> Go2TicketPage()
+        public async Task<string> Go2TicketPage()
         {
             var browser = await BeforeScenario();
             page = await browser.NewPageAsync();
             await page.GotoAsync("https://thman-test.onmana.space/");
             await page.ClickAsync("text=Login");
             await page.WaitForTimeoutAsync(10000);
-            var result = page.Url.Should().EndWith("ticket");
-            //var res = result == "ticket" ? true : false;
-            //return res;
+            var result = page.Url;
+            return result;
         }
+
+        //public async Task<string> Go2TicketPage2()
+        //{
+        //    var browser = await BeforeScenario();
+        //    page = await browser.NewPageAsync();
+        //    await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
+        //    await page.ClickAsync("text=Login");
+        //    await page.WaitForTimeoutAsync(10000);
+        //    var result = page.Url;
+
+        //    return result;
+        //}
 
         //public async Task<bool> AdminCreateRiderFinanceSuccess()
         //{

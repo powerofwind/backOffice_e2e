@@ -12,8 +12,8 @@ namespace backofficeTest_XUnit
         public async Task Test1()
         {
             var sut = new SetUpProject();
-            //var res = await sut.Go2TicketPage();
-            //res.Should().Be(true);
+            var res = await sut.Go2TicketPage();
+            res.Should().EndWith("ticket");
         }
     }
 }
