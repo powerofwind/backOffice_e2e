@@ -15,5 +15,13 @@ namespace backofficeTest_XUnit
             var res = await sut.Go2TicketPage();
             res.Should().EndWith("ticket");
         }
+
+        [Fact(DisplayName = "เข้าหน้า Fraud ได้")]
+        public async Task Test2()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.Go2TicketPage2();
+            res.Should().EndWith("fraud");
+        }
     }
 }
