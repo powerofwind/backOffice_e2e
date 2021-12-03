@@ -174,5 +174,41 @@ namespace backofficeTest
             var result = await page.InnerTextAsync("text=รายงานปัญหา");
             return ticketCount;
         }
+
+
+        public async Task<bool> CreateFraudNoKYC()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/fraud");
+            await page.ClickAsync("text=เพิ่ม >> span");
+            await page.ClickAsync("input[name=\"ion-input-0\"]");
+            await page.FillAsync("input[name=\"ion-input-0\"]", "1100200407555");
+            await page.ClickAsync("text=ตรวจสอบข้อมูล");
+            await page.ClickAsync("text=ตกลง");
+            return true;
+
+        }
+
+        public async Task<bool> CreateFraud()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/fraud");
+            await page.ClickAsync("text=เพิ่ม >> span");
+            await page.ClickAsync("input[name=\"ion-input-0\"]");
+            await page.FillAsync("input[name=\"ion-input-0\"]", "1100200407594");
+            await page.ClickAsync("text=ตรวจสอบข้อมูล");
+            await page.ClickAsync("text=บันทึก >> button");
+            await page.ClickAsync("textarea");
+            await page.FillAsync("textarea", "มีเงินมากกว่า 1,000,000 ใน 1 วัน");
+            await page.ClickAsync("text=บันทึก >> button");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=ย้ายกลับ >> button");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("textarea");
+            await page.FillAsync("textarea", "คืนงานนะ");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("button >> nth=-1");
+            return true;
+        }
     }
 }
