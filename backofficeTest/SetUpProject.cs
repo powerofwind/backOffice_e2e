@@ -141,7 +141,7 @@ namespace backofficeTest
             return ticketCount;
         }
 
-        public async Task<(bool done, bool open)> ReOpenTicket2()
+        public async Task<(bool done, bool open)> ReOpenTicket()
         {
             var browser = await BeforeScenario();
             await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
