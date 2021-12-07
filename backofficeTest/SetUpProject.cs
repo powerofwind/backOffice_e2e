@@ -115,40 +115,6 @@ namespace backofficeTest
             return true;
         }
 
-        public async Task<int> ReOpenTicket()
-        {
-            var browser = await BeforeScenario();
-            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
-            await page.ClickAsync("ion-segment-button:has-text(\"Done\")");
-            //await page.ClickAsync("ion-card:nth-child(1)");
-            await page.ClickAsync("ion-card:first-child");
-            await page.WaitForTimeoutAsync(3000);
-            await page.ClickAsync("text=Pencil Reopen ticket >> button");
-            await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
-            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "reopen");
-            await page.WaitForTimeoutAsync(3000);
-            await page.ClickAsync("text=บันทึก >> span");
-
-
-            //ย้ายงานกลับ
-            await page.WaitForTimeoutAsync(3000);
-            await page.ClickAsync("text=Return Up Back ย้ายกลับ >> button");
-            await page.ClickAsync("textarea[name=\"ion-textarea-1\"]");
-            await page.FillAsync("textarea[name=\"ion-textarea-1\"]", "ย้ายงานกลับ");
-            await page.WaitForTimeoutAsync(3000);
-            await page.ClickAsync("text=บันทึก >> span");
-
-            //เช็คจำนวน ticket ที่แท็ป open ticket
-            await page.ClickAsync("ion-segment-button:has-text(\"Open Ticket\")");
-            var ticket = await page.QuerySelectorAllAsync("ion-card:nth-child");
-            var ticketCount = ticket.Count();
-            //var result = countSeccon - countFisrt;
-            //var res = result == 1 ? true : false;
-
-            var result = await page.InnerTextAsync("text=รายงานปัญหา");
-            return ticketCount;
-        }
-
         public async Task<int> move()
         {
             var browser = await BeforeScenario();
