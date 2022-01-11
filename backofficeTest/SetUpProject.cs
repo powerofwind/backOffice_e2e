@@ -67,10 +67,10 @@ namespace backofficeTest
             await page.ClickAsync("button:has-text(\"ตกลง\")");
             await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
             await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ติดต่อมานะต้องทำยังไง");
-            await page.ClickAsync("input[name=\"ion-input-0\"]");
-            await page.FillAsync("input[name=\"ion-input-0\"]", "0914185400");
             await page.ClickAsync("input[name=\"ion-input-1\"]");
-            await page.FillAsync("input[name=\"ion-input-1\"]", "mana003kku@gmail.com");
+            await page.FillAsync("input[name=\"ion-input-1\"]", "0914185400");
+            await page.ClickAsync("input[name=\"ion-input-2\"]");
+            await page.FillAsync("input[name=\"ion-input-2\"]", "mana003kku@gmail.com");
             await page.ClickAsync("text=สร้าง >> button");
             await page.WaitForTimeoutAsync(3000);
 
@@ -105,43 +105,62 @@ namespace backofficeTest
         {
             var browser = await BeforeScenario();
             await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
-            await page.ClickAsync("ion-segment-button:has-text(\"Done\")");
+            await page.ClickAsync("ion-segment-button:has-text(\"Open Ticket\")");
+            await page.ClickAsync("text=รับเรื่อง >> button");
 
-            //เช็คว่ามี ticket อยู่แล้วไหม
-            var seccond = await page.QuerySelectorAllAsync("ion-item:nth-child");
-            var countSeccon = seccond.Count();
-            //var result = countSeccon - countFisrt;
-            //var res = result == 1 ? true : false;
-            return true;
+            //งานอยู่ใน Mine แล้วเปลี่ยนสถานะสำเร็จและกดปิดงาน
+            await page.WaitForTimeoutAsync(3000);
+            //await page.ClickAsync("ion-card:nth-child(1)");
+            await page.ClickAsync("label:has-text(\"ยังไม่ถูกแก้\")");
+            await page.ClickAsync("button[role=\"radio\"]:has-text(\"แก้สำเร็จแล้ว\")");
+            await page.ClickAsync("button:has-text(\"OK\")");
+            await page.ClickAsync("text=ปิดงาน >> button");
+            await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ดำเนินการแก้ไขเรียบร้อยแล้ว");
+            await page.WaitForTimeoutAsync(3000);
+            await page.ClickAsync("button >> nth=-1");
+
+            //ถ้าปิดงานแล้วที่ Mine จะขึ้น text ไม่มีรายการ
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            var result = await page.InnerTextAsync("text=ไม่มีรายการ");
+            var res = await page.InnerTextAsync("text=ไม่มีรายการ");
+            var actual = res == "ไม่มีรายการ" ? true : false;
+            return actual;
         }
 
-        public async Task<int> move()
+        public async Task<bool> RollBack()
         {
             var browser = await BeforeScenario();
             await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
             await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
 
-            //ย้ายงานกลับ
+            //งานอยู่ใน Mine แล้วจะย้ายงานกลับ
             await page.WaitForTimeoutAsync(3000);
-            await page.ClickAsync("ion-card:nth-child(4)");
+            await page.ClickAsync("ion-card:nth-child(1)");
             await page.ClickAsync("text=Return Up Back ย้ายกลับ >> button");
             await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
             await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ย้ายงานกลับ");
             await page.WaitForTimeoutAsync(3000);
-            await page.ClickAsync("text=บันทึก");
+            await page.ClickAsync("button >> nth=-1");
+
+            //ถ้างานถูกย้ายกลับแล้วที่ Mine จะขึ้น text ไม่มีรายการ
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            var result = await page.InnerTextAsync("text=ไม่มีรายการ");
+            var res = await page.InnerTextAsync("text=ไม่มีรายการ");
+            var actual = res == "ไม่มีรายการ" ? true : false;
+            return actual;
 
             //เช็คจำนวน ticket ที่แท็ป open ticket
-            await page.ClickAsync("ion-segment-button:has-text(\"Open Ticket\")");
-            var ticket = await page.QuerySelectorAllAsync("ion-card:nth-child");
-            var ticketCount = ticket.Count();
+            //await page.ClickAsync("ion-segment-button:has-text(\"Open Ticket\")");
+            //var ticket = await page.QuerySelectorAllAsync(":nth-match(ion-card-content)");
+            //var ticket = await page.QuerySelectorAllAsync("ion-card");
+            //var ticketCount = ticket.Count();
             //var result = countSeccon - countFisrt;
             //var res = result == 1 ? true : false;
-
-            var result = await page.InnerTextAsync("text=รายงานปัญหา");
-            return ticketCount;
+            //return ticketCount;
         }
 
-        public async Task<(bool done, bool open)> ReOpenTicket()
+        public async Task<(bool done, bool open)> ReOpenTicket2()
         {
             var browser = await BeforeScenario();
             await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
@@ -184,16 +203,6 @@ namespace backofficeTest
 
             return (doneResult, openTicketResult);
         }
-
-        //public async Task<int> move()
-        //{
-        //    var browser = await BeforeScenario();
-        //    await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
-        //    await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
-        //    var ticket = await page.QuerySelectorAllAsync("ion-card");
-        //    var openTicketCount = ticket.Count();
-        //    //var result = countSeccon - countFisrt;
-        //    //var res = result == 1 ? true : false;
 
         public async Task<bool> CreateFraudNoKYC()
         {

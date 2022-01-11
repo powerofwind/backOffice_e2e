@@ -24,13 +24,13 @@ namespace backofficeTest_XUnit
             res.Should().EndWith("fraud");
         }
 
-        //[Fact(DisplayName = "สามารถสร้าง Ticket ที่ยังไม่มีคนรับเรื่องได้")]
-        //public async Task CreateTicketSuccess()
-        //{
-        //    var sut = new SetUpProject();
-        //    var res = await sut.CreateTicketSuccess();
-        //    Assert.Equal("ติดต่อมานะต้องทำยังไง", res);
-        //}
+        [Fact(DisplayName = "สามารถสร้าง Ticket ที่ยังไม่มีคนรับเรื่องได้")]
+        public async Task CreateTicketSuccess()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.CreateTicketSuccess();
+            Assert.Equal("ติดต่อมานะต้องทำยังไง", res);
+        }
 
         //[Fact(DisplayName = "ไม่สามารถสร้าง Ticket ที่มีคนรับเรื่องอยู่แล้วได้")]
         //public async Task CreateTicketFail()
@@ -40,7 +40,7 @@ namespace backofficeTest_XUnit
         //    Assert.Equal(true, res);
         //}
 
-        [Fact(DisplayName = "ปิดงานเมื่อดำเนินการแก้ไขงานสำเร็จได้")]
+        [Fact(DisplayName = "(Ticket) ปิดงานเมื่อดำเนินการแก้ไขงานสำเร็จได้")]
         public async Task CloseTicket()
         {
             var sut = new SetUpProject();
@@ -48,12 +48,20 @@ namespace backofficeTest_XUnit
             Assert.Equal(true, res);
         }
 
-        [Fact(DisplayName = "ทำการ Reopen และย้ายงานกลับได้")]
-        public async Task ReOpenTicket()
+        [Fact(DisplayName = "(Ticket) สามารถกดย้ายงานกลับได้")]
+        public async Task RollBack()
         {
             var sut = new SetUpProject();
-            var res = await sut.move();
-            Assert.Equal(2, res);
+            var res = await sut.RollBack();
+            Assert.Equal(true, res);
         }
+
+        //[Fact(DisplayName = "(Ticket) ทำการ Reopen เพื่อกลับมาแก้ไขปัญหาของงานที่ถูกปิดไปแล้วได้")]
+        //public async Task ReOpenTicket()
+        //{
+        //    var sut = new SetUpProject();
+        //    var res = await sut.ReOpenTicket();
+        //    Assert.Equal(true, res);
+        //}
     }
 }
