@@ -24,7 +24,7 @@ namespace backofficeTest_XUnit
             res.Should().EndWith("fraud");
         }
 
-        [Fact(DisplayName = "สามารถสร้าง Ticket ที่ยังไม่มีคนรับเรื่องได้")]
+        [Fact(DisplayName = "(Ticket) สามารถสร้าง Ticket ที่ยังไม่มีคนรับเรื่องได้")]
         public async Task CreateTicketSuccess()
         {
             var sut = new SetUpProject();
@@ -32,13 +32,13 @@ namespace backofficeTest_XUnit
             Assert.Equal("ติดต่อมานะต้องทำยังไง", res);
         }
 
-        //[Fact(DisplayName = "ไม่สามารถสร้าง Ticket ที่มีคนรับเรื่องอยู่แล้วได้")]
-        //public async Task CreateTicketFail()
-        //{
-        //    var sut = new SetUpProject();
-        //    var res = await sut.CreateTicketFail();
-        //    Assert.Equal(true, res);
-        //}
+        [Fact(DisplayName = "(Ticket) ไม่สามารถสร้าง Ticket ที่มีคนรับเรื่องอยู่แล้วได้")]
+        public async Task CreateTicketFail()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.CreateTicketFail();
+            Assert.Equal(true, res);
+        }
 
         [Fact(DisplayName = "(Ticket) ปิดงานเมื่อดำเนินการแก้ไขงานสำเร็จได้")]
         public async Task CloseTicket()
@@ -48,20 +48,28 @@ namespace backofficeTest_XUnit
             Assert.Equal(true, res);
         }
 
-        [Fact(DisplayName = "(Ticket) สามารถกดย้ายงานกลับได้")]
-        public async Task RollBack()
+        [Fact(DisplayName = "(Ticket) ปิด Ticket ที่มี Issue ที่ยังแก้ไม่เสร็จได้")]
+        public async Task CloseTicketWhenIssueNotDone()
         {
             var sut = new SetUpProject();
-            var res = await sut.RollBack();
+            var res = await sut.CloseTicketWhenIssueNotDone();
             Assert.Equal(true, res);
         }
 
-        //[Fact(DisplayName = "(Ticket) ทำการ Reopen เพื่อกลับมาแก้ไขปัญหาของงานที่ถูกปิดไปแล้วได้")]
-        //public async Task ReOpenTicket()
-        //{
-        //    var sut = new SetUpProject();
-        //    var res = await sut.ReOpenTicket();
-        //    Assert.Equal(true, res);
-        //}
+       [Fact(DisplayName = "(Ticket) สามารถกดย้ายงานกลับได้")]
+        public async Task RollBack()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.RollBack("https://thman-test.onmana.space/app/index.html#/ticket");
+            res.Should().Be(true);
+        }
+
+        [Fact(DisplayName = "(Ticket) ทำการ Reopen เพื่อกลับมาแก้ไขปัญหาของงานที่ถูกปิดไปแล้วได้")]
+        public async Task ReOpenTicket()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.ReOpenTicket("https://thman-test.onmana.space/app/index.html#/ticket","ticket");
+            Assert.Equal(true, res);
+        }
     }
 }

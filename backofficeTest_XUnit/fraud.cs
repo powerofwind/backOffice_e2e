@@ -9,9 +9,9 @@ using Xunit;
 
 namespace backofficeTest_XUnit
 {
-    public class fraud
+    public class Fraud
     {
-        [Fact(DisplayName = "สร้าง fraud ไม่เคย kyc")]
+        [Fact(DisplayName = "(Fraud) ไม่สามารถสร้าง fraud โดยใช้เลขบัตรประชาชนที่ไม่เคยผ่านการทำ KYC ได้")]
         public async Task CreateFraudNoKYC()
         {
             var sut = new SetUpProject();
