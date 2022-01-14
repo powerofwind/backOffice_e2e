@@ -67,10 +67,10 @@ namespace backofficeTest
             await page.ClickAsync("button:has-text(\"ตกลง\")");
             await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
             await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ติดต่อมานะต้องทำยังไง");
-            await page.ClickAsync("input[name=\"ion-input-0\"]");
-            await page.FillAsync("input[name=\"ion-input-0\"]", "0914185400");
-            await page.ClickAsync("input[name=\"ion-input-1\"]");
-            await page.FillAsync("input[name=\"ion-input-1\"]", "mana003kku@gmail.com");
+            await page.ClickAsync("input[name=\"ion-input-4\"]");
+            await page.FillAsync("input[name=\"ion-input-4\"]", "0914185400");
+            await page.ClickAsync("input[name=\"ion-input-5\"]");
+            await page.FillAsync("input[name=\"ion-input-5\"]", "mana003kku@gmail.com");
             await page.ClickAsync("text=สร้าง >> button");
             await page.WaitForTimeoutAsync(3000);
 
@@ -103,7 +103,10 @@ namespace backofficeTest
             var browser = await BeforeScenario();
             await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
             await page.ClickAsync("ion-segment-button:has-text(\"Open Ticket\")");
-            await page.ClickAsync("text=รับเรื่อง >> button");
+            //await page.ClickAsync("text=รับเรื่อง >> button");
+            // เลือกปุ่ม "รับเรื่อง" อันสุดท้าย
+            //ion - card ion - card:last - child ion - button
+            await page.ClickAsync("ion-card:last-child ion-button");
 
             //งานอยู่ใน Mine แล้วเปลี่ยนสถานะสำเร็จและกดปิดงาน
             await page.WaitForTimeoutAsync(3000);
@@ -183,7 +186,7 @@ namespace backofficeTest
             //return ticketCount;
         }
 
-        public async Task<bool> ReOpenTicket(string url, string testPage)
+        public async Task<bool> ReOpenTicket(string url, string testFlow)
         {
             var browser = await BeforeScenario();
             await page.GotoAsync(url);
@@ -206,7 +209,7 @@ namespace backofficeTest
 
             //เช็คจำนวน ticket ที่แท็ป open ticket/done
             await page.WaitForTimeoutAsync(3000);
-            if (testPage == "ticket")
+            if (testFlow == "ticket")
             {
             await page.ClickAsync("[aria-label=\"back\"]");
             }
@@ -264,13 +267,11 @@ namespace backofficeTest
         {
             var browser = await BeforeScenario();
             await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/fraud");
-            //await page.ClickAsync("text=เพิ่ม >> span");
             await page.ClickAsync("text=เพิ่ม >> button");
             await page.ClickAsync("input[name=\"ion-input-0\"]");
             await page.FillAsync("input[name=\"ion-input-0\"]", "1100200407555");
             await page.ClickAsync("text=ตรวจสอบข้อมูล");
             var res = await page.InnerTextAsync("text=PID no have kyc info");
-            //await page.ClickAsync("button:has-text(\"OK\")");
             await page.ClickAsync("text=ตกลง");
             var actual = res == "PID no have kyc info" ? true : false;
             return actual;
