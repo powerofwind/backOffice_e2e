@@ -7,7 +7,7 @@ namespace backofficeTest
     {
         private static volatile TaskCompletionSource<IPage> loginPageTask;
 
-        public static async Task<IPage> Login(this Task<IPage> targetPage)
+        public static async Task<IPage> DoLogin(this Task<IPage> targetPage)
         {
             if (null == loginPageTask)
             {
