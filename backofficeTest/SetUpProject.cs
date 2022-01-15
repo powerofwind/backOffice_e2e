@@ -32,53 +32,53 @@ namespace backofficeTest
             return browser;
         }
 
-        public async Task<string> Go2TicketPage()
-        {
-            var browser = await BeforeScenario();
-            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
-            var result = page.Url;
-            return result;
-        }
+        //public async Task<string> Go2TicketPage()
+        //{
+        //    var browser = await BeforeScenario();
+        //    await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
+        //    var result = page.Url;
+        //    return result;
+        //}
 
-        public async Task<string> Go2TicketPage2()
-        {
-            var browser = await BeforeScenario();
-            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/fraud");
-            var result = page.Url;
-            return result;
-        }
+        //public async Task<string> Go2TicketPage2()
+        //{
+        //    var browser = await BeforeScenario();
+        //    await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/fraud");
+        //    var result = page.Url;
+        //    return result;
+        //}
 
-        public async Task<string> CreateTicketSuccess()
-        {
-            var browser = await BeforeScenario();
-            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
-            await page.ClickAsync("text=เพิ่ม >> span");
-            await page.ClickAsync("input[name=\"ion-input-0\"]");
-            await page.FillAsync("input[name=\"ion-input-0\"]", "0914185400");
-            await page.ClickAsync("text=ตรวจสอบข้อมูล");
-            await page.ClickAsync("input[name=\"ion-input-3\"]");
-            await page.FillAsync("input[name=\"ion-input-3\"]", "mana003kku@gmail.com");
-            await page.ClickAsync(":nth-match(:text(\"ตรวจสอบข้อมูล\"), 5)");
-            await page.ClickAsync("text=บันทึก >> span");
+        //public async Task<string> CreateTicketSuccess()
+        //{
+        //    var browser = await BeforeScenario();
+        //    await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
+        //    await page.ClickAsync("text=เพิ่ม >> span");
+        //    await page.ClickAsync("input[name=\"ion-input-0\"]");
+        //    await page.FillAsync("input[name=\"ion-input-0\"]", "0914185400");
+        //    await page.ClickAsync("text=ตรวจสอบข้อมูล");
+        //    await page.ClickAsync("input[name=\"ion-input-3\"]");
+        //    await page.FillAsync("input[name=\"ion-input-3\"]", "mana003kku@gmail.com");
+        //    await page.ClickAsync(":nth-match(:text(\"ตรวจสอบข้อมูล\"), 5)");
+        //    await page.ClickAsync("text=บันทึก >> span");
 
-            //กรอกข้อมูล ticket
-            await page.ClickAsync("text=ต้องระบุ, ประเภทปัญหา");
-            await page.ClickAsync("button[role=\"radio\"]:has-text(\"อื่นๆ\")");
-            await page.ClickAsync("button:has-text(\"ตกลง\")");
-            await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
-            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ติดต่อมานะต้องทำยังไง");
-            await page.ClickAsync("input[name=\"ion-input-4\"]");
-            await page.FillAsync("input[name=\"ion-input-4\"]", "0914185400");
-            await page.ClickAsync("input[name=\"ion-input-5\"]");
-            await page.FillAsync("input[name=\"ion-input-5\"]", "mana003kku@gmail.com");
-            await page.ClickAsync("text=สร้าง >> button");
-            await page.WaitForTimeoutAsync(3000);
+        //    //กรอกข้อมูล ticket
+        //    await page.ClickAsync("text=ต้องระบุ, ประเภทปัญหา");
+        //    await page.ClickAsync("button[role=\"radio\"]:has-text(\"อื่นๆ\")");
+        //    await page.ClickAsync("button:has-text(\"ตกลง\")");
+        //    await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
+        //    await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ติดต่อมานะต้องทำยังไง");
+        //    await page.ClickAsync("input[name=\"ion-input-4\"]");
+        //    await page.FillAsync("input[name=\"ion-input-4\"]", "0914185400");
+        //    await page.ClickAsync("input[name=\"ion-input-5\"]");
+        //    await page.FillAsync("input[name=\"ion-input-5\"]", "mana003kku@gmail.com");
+        //    await page.ClickAsync("text=สร้าง >> button");
+        //    await page.WaitForTimeoutAsync(3000);
 
-            //เช็คว่าเพิ่ม ticket ได้ไหม
-            var result = await page.InnerTextAsync(":nth-match(:text(\"ติดต่อมานะต้องทำยังไง\"), 2)");
-            //await page.ClickAsync(":nth-match(:text(\"ติดต่อมานะต้องทำยังไง\"), 2)");
-            return result;
-        }
+        //    //เช็คว่าเพิ่ม ticket ได้ไหม
+        //    var result = await page.InnerTextAsync(":nth-match(:text(\"ติดต่อมานะต้องทำยังไง\"), 2)");
+        //    //await page.ClickAsync(":nth-match(:text(\"ติดต่อมานะต้องทำยังไง\"), 2)");
+        //    return result;
+        //}
 
         public async Task<bool> CreateTicketFail()
         {

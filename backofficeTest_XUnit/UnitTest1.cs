@@ -8,29 +8,29 @@ namespace backofficeTest_XUnit
 {
     public class UnitTest1
     {
-        [Fact(DisplayName = "เข้าหน้า Ticket ได้")]
-        public async Task Test1()
-        {
-            var sut = new SetUpProject();
-            var res = await sut.Go2TicketPage();
-            res.Should().EndWith("ticket");
-        }
+        //[Fact(DisplayName = "เข้าหน้า Ticket ได้")]
+        //public async Task Test1()
+        //{
+        //    var sut = new SetUpProject();
+        //    var res = await sut.Go2TicketPage();
+        //    res.Should().EndWith("ticket");
+        //}
 
-        [Fact(DisplayName = "เข้าหน้า Fraud ได้")]
-        public async Task Test2()
-        {
-            var sut = new SetUpProject();
-            var res = await sut.Go2TicketPage2();
-            res.Should().EndWith("fraud");
-        }
+        //[Fact(DisplayName = "เข้าหน้า Fraud ได้")]
+        //public async Task Test2()
+        //{
+        //    var sut = new SetUpProject();
+        //    var res = await sut.Go2TicketPage2();
+        //    res.Should().EndWith("fraud");
+        //}
 
-        [Fact(DisplayName = "(Ticket) สามารถสร้าง Ticket ที่ยังไม่มีคนรับเรื่องได้")]
-        public async Task CreateTicketSuccess()
-        {
-            var sut = new SetUpProject();
-            var res = await sut.CreateTicketSuccess();
-            Assert.Equal("ติดต่อมานะต้องทำยังไง", res);
-        }
+        //[Fact(DisplayName = "(Ticket) สามารถสร้าง Ticket ที่ยังไม่มีคนรับเรื่องได้")]
+        //public async Task CreateTicketSuccess()
+        //{
+        //    var sut = new SetUpProject();
+        //    var res = await sut.CreateTicketSuccess();
+        //    Assert.Equal("ติดต่อมานะต้องทำยังไง", res);
+        //}
 
         [Fact(DisplayName = "(Ticket) ไม่สามารถสร้าง Ticket ที่มีคนรับเรื่องอยู่แล้วได้")]
         public async Task CreateTicketFail()
