@@ -9,7 +9,7 @@ namespace backofficeTest_XUnit
         [Fact]
         public async void FrozenPageCanBeOpenProperly()
         {
-            var page = await PageBuilder.Instance.Build();
+            var page = await PageFactory.CreatePage().Login();
             await page.GotoAsync(Pages.Frozen);
             page.Url.Should().Be(Pages.Frozen);
         }
@@ -17,7 +17,7 @@ namespace backofficeTest_XUnit
         [Fact]
         public async void FraudPageCanBeOpenProperly()
         {
-            var page = await PageBuilder.Instance.Build();
+            var page = await PageFactory.CreatePage().Login();
             await page.GotoAsync(Pages.Fraud);
             page.Url.Should().Be(Pages.Fraud);
         }
@@ -25,7 +25,7 @@ namespace backofficeTest_XUnit
         [Fact]
         public async void TicketPageCanBeOpenProperly()
         {
-            var page = await PageBuilder.Instance.Build();
+            var page = await PageFactory.CreatePage().Login();
             await page.GotoAsync(Pages.Ticket);
             page.Url.Should().Be(Pages.Ticket);
         }
