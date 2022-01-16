@@ -55,6 +55,7 @@ namespace backofficeTest_XUnit.Tests
 
             var page = result.page;
             await page.GotoAsync(Pages.Ticket);
+
             const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Mine?search=&page=-1";
             await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
             var content = await page.ContentAsync();
@@ -84,6 +85,7 @@ namespace backofficeTest_XUnit.Tests
 
             var page = result.page;
             await page.GotoAsync(Pages.Ticket);
+
             const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Mine?search=&page=-1";
             await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
             var content = await page.ContentAsync();
