@@ -46,5 +46,66 @@ namespace backofficeTest.Steps
             var submitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=สร้าง >> button"), CreateTicketApi);
             return (submitResponse.Ok, page);
         }
+
+        public async Task<(bool isSuccess, IPage page, string cardOwnerName)> RollbackLastestTicket()
+        {
+            var page = await PageFactory.CreatePage().DoLogin();
+            await page.GotoAsync(Pages.Ticket);
+
+            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Mine?search=&page=-1";
+            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
+
+            var cardOwnerName = await page.InnerTextAsync("ion-card:last-child h2:first-child");
+            await page.ClickAsync("ion-card:last-child");
+
+            const string GetCardInfoApi = "https://thman-test.onmana.space/api/user/getoperatorinfo";
+            var getCardInfoReponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=Return Up Back ย้ายกลับ >> button"), GetCardInfoApi);
+            if (false == getCardInfoReponse.Ok)
+            {
+                return (false, page, cardOwnerName);
+            }
+
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ย้ายงานกลับ");
+
+            const string RollbackCardApi = "https://thman-test.onmana.space/api/Ticket/rollback";
+            var rollbackResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button >> nth=-1"), RollbackCardApi);
+            return (rollbackResponse.Ok, page, cardOwnerName);
+        }
+
+        public async Task<(IPage page, string cardOwnerName)> TakeLastestTicket()
+        {
+            var page = await PageFactory.CreatePage().DoLogin();
+            await page.GotoAsync(Pages.Ticket);
+
+            var cardOwnerName = await page.InnerTextAsync("ion-card:last-child h2:first-child");
+            await page.ClickAsync("ion-card:last-child button");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            return (page, cardOwnerName);
+        }
+
+        public async Task<(bool isSuccess, IPage page, string cardOwnerName)> CloseTicketWithIncompleteStatus()
+        {
+            var page = await PageFactory.CreatePage().DoLogin();
+            await page.GotoAsync(Pages.Ticket);
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+
+            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Mine?search=&page=-1";
+            await page.WaitForResponseAsync(GetMineTicketApi);
+
+            var cardOwnerName = await page.InnerTextAsync("ion-card:last-child h2:first-child");
+            await page.ClickAsync("ion-card:last-child");
+
+            await page.ClickAsync("text=ปิดงาน >> button");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            await page.ClickAsync("text=ตกลง");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ดำเนินการแก้ไขเรียบร้อยแล้ว");
+
+            const string CloseTicketApi = "https://thman-test.onmana.space/api/Ticket/close";
+            var closeTicketResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button >> nth=-1"), CloseTicketApi);
+            return (closeTicketResponse.Ok, page, cardOwnerName);
+        }
     }
 }
