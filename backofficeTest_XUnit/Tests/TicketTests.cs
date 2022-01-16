@@ -14,8 +14,11 @@ namespace backofficeTest_XUnit.Tests
         public async Task InputUnknowPhoneNoThenCanNotCreateNewTicket()
         {
             var sut = new TicketStep();
-            var result = await sut.CreateNewTicket("0000000000", "invalid@email.com", null, null, null);
+            var desc = Guid.NewGuid().ToString();
+            var result = await sut.CreateNewTicket("0000000000", "invalid@email.com", desc, null, null);
             result.isSuccess.Should().BeFalse();
+            var content = await result.page.ContentAsync();
+            content.Should().NotContain(desc);
         }
 
         [Fact(DisplayName = "(Ticket) สามารถสร้าง Ticket ที่ยังไม่มีคนรับเรื่องได้")]
@@ -52,7 +55,6 @@ namespace backofficeTest_XUnit.Tests
             var sut = new TicketStep();
             var result = await sut.RollbackLastestTicket();
 
-            result.isSuccess.Should().BeTrue();
             var content = await result.page.ContentAsync();
             content.Should().Contain(result.cardOwnerName);
         }
@@ -79,7 +81,6 @@ namespace backofficeTest_XUnit.Tests
             var sut = new TicketStep();
             var result = await sut.CloseTicketWithIncompleteStatus();
 
-            result.isSuccess.Should().BeTrue();
             var page = result.page;
             const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Done?search=&page=-1";
             await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Done\")"), GetMineTicketApi);

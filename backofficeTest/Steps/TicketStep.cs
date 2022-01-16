@@ -1,6 +1,5 @@
 ﻿using backofficeTest.Helpers;
 using Microsoft.Playwright;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace backofficeTest.Steps
@@ -17,24 +16,15 @@ namespace backofficeTest.Steps
 
             var validatePaIdUrl = $"https://thman-test.onmana.space/api/User/verify/{manaPhoneNo}";
             var validatePaIdResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=ตรวจสอบข้อมูล"), validatePaIdUrl);
-            var validatePaIdJson = await validatePaIdResponse.TextAsync();
-            var validatePaIdResultTxt = JsonDocument.Parse(validatePaIdJson).RootElement.GetProperty("isSuccess").ToString();
-            bool.TryParse(validatePaIdResultTxt, out bool validatePaIdResult);
-            if (false == validatePaIdResult)
+            if (false == validatePaIdResponse.Ok || false == validatePaIdResponse.JsonAsync().Result.Value.GetProperty("isSuccess").GetBoolean())
             {
                 return (false, page);
             }
 
             await page.FillAsync("input[name=\"ion-input-3\"]", manaEmail);
+            await page.ClickAsync("text=บันทึก >> span");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-            const string SaveTicketApi = "https://thman-test.onmana.space/api/Ticket/status";
-            var saveTicketResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=บันทึก >> span"), SaveTicketApi);
-            if (false == saveTicketResponse.Ok)
-            {
-                return (false, page);
-            }
-
-            //กรอกข้อมูล ticket
             await page.ClickAsync("text=ต้องระบุ, ประเภทปัญหา");
             await page.ClickAsync("button[role=\"radio\"]:has-text(\"อื่นๆ\")");
             await page.ClickAsync("button:has-text(\"ตกลง\")");
@@ -42,34 +32,30 @@ namespace backofficeTest.Steps
             await page.FillAsync("input[name=\"ion-input-4\"]", contactPhoneNo);
             await page.FillAsync("input[name=\"ion-input-5\"]", contactEmail);
 
-            const string CreateTicketApi = "https://thman-test.onmana.space/api/Ticket/operator/create";
-            var submitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=สร้าง >> button"), CreateTicketApi);
-            return (submitResponse.Ok, page);
+            await page.ClickAsync("text=สร้าง >> button");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            return (true, page);
         }
 
-        public async Task<(bool isSuccess, IPage page, string cardOwnerName)> RollbackLastestTicket()
+        public async Task<(IPage page, string cardOwnerName)> RollbackLastestTicket()
         {
             var page = await PageFactory.CreatePage().DoLogin();
             await page.GotoAsync(Pages.Ticket);
 
-            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Mine?search=&page=-1";
-            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
             var cardOwnerName = await page.InnerTextAsync("ion-card:last-child h2:first-child");
             await page.ClickAsync("ion-card:last-child");
 
-            const string GetCardInfoApi = "https://thman-test.onmana.space/api/user/getoperatorinfo";
-            var getCardInfoReponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=Return Up Back ย้ายกลับ >> button"), GetCardInfoApi);
-            if (false == getCardInfoReponse.Ok)
-            {
-                return (false, page, cardOwnerName);
-            }
+            await page.ClickAsync("text=Return Up Back ย้ายกลับ >> button");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
             await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ย้ายงานกลับ");
 
-            const string RollbackCardApi = "https://thman-test.onmana.space/api/Ticket/rollback";
-            var rollbackResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button >> nth=-1"), RollbackCardApi);
-            return (rollbackResponse.Ok, page, cardOwnerName);
+            await page.ClickAsync("button >> nth=-1");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            return (page, cardOwnerName);
         }
 
         public async Task<(IPage page, string cardOwnerName)> TakeLastestTicket()
@@ -83,14 +69,12 @@ namespace backofficeTest.Steps
             return (page, cardOwnerName);
         }
 
-        public async Task<(bool isSuccess, IPage page, string cardOwnerName)> CloseTicketWithIncompleteStatus()
+        public async Task<(IPage page, string cardOwnerName)> CloseTicketWithIncompleteStatus()
         {
             var page = await PageFactory.CreatePage().DoLogin();
             await page.GotoAsync(Pages.Ticket);
             await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
-
-            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Mine?search=&page=-1";
-            await page.WaitForResponseAsync(GetMineTicketApi);
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
             var cardOwnerName = await page.InnerTextAsync("ion-card:last-child h2:first-child");
             await page.ClickAsync("ion-card:last-child");
@@ -103,9 +87,9 @@ namespace backofficeTest.Steps
 
             await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ดำเนินการแก้ไขเรียบร้อยแล้ว");
 
-            const string CloseTicketApi = "https://thman-test.onmana.space/api/Ticket/close";
-            var closeTicketResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button >> nth=-1"), CloseTicketApi);
-            return (closeTicketResponse.Ok, page, cardOwnerName);
+            await page.ClickAsync("button >> nth=-1");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            return (page, cardOwnerName);
         }
     }
 }
