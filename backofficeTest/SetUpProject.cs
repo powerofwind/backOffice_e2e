@@ -98,35 +98,35 @@ namespace backofficeTest
         //    return endURL;
         //}
 
-        public async Task<bool> CloseTicket()
-        {
-            var browser = await BeforeScenario();
-            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
-            await page.ClickAsync("ion-segment-button:has-text(\"Open Ticket\")");
-            //await page.ClickAsync("text=รับเรื่อง >> button");
-            // เลือกปุ่ม "รับเรื่อง" อันสุดท้าย
-            //ion - card ion - card:last - child ion - button
-            await page.ClickAsync("ion-card:last-child ion-button");
+        //public async Task<bool> CloseTicket()
+        //{
+        //    var browser = await BeforeScenario();
+        //    await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
+        //    await page.ClickAsync("ion-segment-button:has-text(\"Open Ticket\")");
+        //    //await page.ClickAsync("text=รับเรื่อง >> button");
+        //    // เลือกปุ่ม "รับเรื่อง" อันสุดท้าย
+        //    //ion - card ion - card:last - child ion - button
+        //    await page.ClickAsync("ion-card:last-child ion-button");
 
-            //งานอยู่ใน Mine แล้วเปลี่ยนสถานะสำเร็จและกดปิดงาน
-            await page.WaitForTimeoutAsync(3000);
-            //await page.ClickAsync("ion-card:nth-child(1)");
-            await page.ClickAsync("label:has-text(\"ยังไม่ถูกแก้\")");
-            await page.ClickAsync("button[role=\"radio\"]:has-text(\"แก้สำเร็จแล้ว\")");
-            await page.ClickAsync("button:has-text(\"OK\")");
-            await page.ClickAsync("text=ปิดงาน >> button");
-            await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
-            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ดำเนินการแก้ไขเรียบร้อยแล้ว");
-            await page.WaitForTimeoutAsync(3000);
-            await page.ClickAsync("button >> nth=-1");
+        //    //งานอยู่ใน Mine แล้วเปลี่ยนสถานะสำเร็จและกดปิดงาน
+        //    await page.WaitForTimeoutAsync(3000);
+        //    //await page.ClickAsync("ion-card:nth-child(1)");
+        //    await page.ClickAsync("label:has-text(\"ยังไม่ถูกแก้\")");
+        //    await page.ClickAsync("button[role=\"radio\"]:has-text(\"แก้สำเร็จแล้ว\")");
+        //    await page.ClickAsync("button:has-text(\"OK\")");
+        //    await page.ClickAsync("text=ปิดงาน >> button");
+        //    await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
+        //    await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ดำเนินการแก้ไขเรียบร้อยแล้ว");
+        //    await page.WaitForTimeoutAsync(3000);
+        //    await page.ClickAsync("button >> nth=-1");
 
-            //ถ้าปิดงานแล้วที่ Mine จะขึ้น text ไม่มีรายการ
-            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
-            var result = await page.InnerTextAsync("text=ไม่มีรายการ");
-            var res = await page.InnerTextAsync("text=ไม่มีรายการ");
-            var actual = res == "ไม่มีรายการ" ? true : false;
-            return actual;
-        }
+        //    //ถ้าปิดงานแล้วที่ Mine จะขึ้น text ไม่มีรายการ
+        //    await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+        //    var result = await page.InnerTextAsync("text=ไม่มีรายการ");
+        //    var res = await page.InnerTextAsync("text=ไม่มีรายการ");
+        //    var actual = res == "ไม่มีรายการ" ? true : false;
+        //    return actual;
+        //}
 
         //public async Task<bool> CloseTicketWhenIssueNotDone()
         //{

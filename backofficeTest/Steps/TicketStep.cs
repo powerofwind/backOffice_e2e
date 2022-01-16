@@ -1,5 +1,7 @@
 ﻿using backofficeTest.Helpers;
 using Microsoft.Playwright;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace backofficeTest.Steps
@@ -103,12 +105,50 @@ namespace backofficeTest.Steps
             await page.ClickAsync("ion-card:first-child");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
+            var ticketId = page.Url.Split('/', StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
             await page.ClickAsync("text=Pencil Reopen ticket >> button");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
             await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "test reopen");
 
             await page.ClickAsync("text=บันทึก >> span");
+            await page.WaitForURLAsync($"{Pages.Ticket}/detail/{ticketId}");
+            return (page, cardOwnerName);
+        }
+
+        public async Task<(IPage page, string cardOwnerName)> CloseTicketAllCompleteStatus()
+        {
+            var page = await PageFactory.CreatePage().DoLogin();
+            await page.GotoAsync(Pages.Ticket);
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            var cardOwnerName = await page.InnerTextAsync("ion-card:last-child h2:first-child");
+
+            await page.ClickAsync("ion-card:last-child");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            do
+            {
+                try
+                {
+                    await page.ClickAsync("label:has-text(\"ยังไม่ถูกแก้\")", new PageClickOptions { Timeout = 1500 });
+                }
+                catch (Exception)
+                {
+                    break;
+                }
+                await page.ClickAsync("button[role=\"radio\"]:has-text(\"แก้สำเร็จแล้ว\")");
+                await page.ClickAsync("button:has-text(\"OK\")");
+                await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            } while (true);
+
+            await page.ClickAsync("text=ปิดงาน >> button");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ดำเนินการแก้ไขเรียบร้อยแล้ว");
+
+            await page.ClickAsync("button >> nth=-1");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             return (page, cardOwnerName);
         }
