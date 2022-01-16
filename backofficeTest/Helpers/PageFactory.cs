@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace backofficeTest
+namespace backofficeTest.Helpers
 {
     public static class PageFactory
     {

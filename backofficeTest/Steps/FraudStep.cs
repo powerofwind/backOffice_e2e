@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using backofficeTest.Helpers;
 using System.Threading.Tasks;
 
 namespace backofficeTest.Steps
@@ -16,16 +13,15 @@ namespace backofficeTest.Steps
             await page.ClickAsync("text=เพิ่ม >> span");
             await page.FillAsync("input[name=\"ion-input-0\"]", paId);
 
-            var validatePaIdResponse = await page.RunAndWaitForResponseAsync(
-                () => page.ClickAsync("text=ตรวจสอบข้อมูล"), "https://thman-test.onmana.space/api/User");
-            //var xxx = await validatePaIdResponse.TextAsync();
+            const string ValidatePaIdApi = "https://thman-test.onmana.space/api/User";
+            var validatePaIdResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=ตรวจสอบข้อมูล"), ValidatePaIdApi);
             if (false == validatePaIdResponse.Ok)
             {
                 return false;
             }
 
-            var submitResponse = await page.RunAndWaitForResponseAsync(
-                () => page.ClickAsync("text=บันทึก >> button"), "https://thman-test.onmana.space/api/Ticket/status");
+            const string SaveFraudApi = "https://thman-test.onmana.space/api/Ticket/status";
+            var submitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=บันทึก >> button"), SaveFraudApi);
             if (false == submitResponse.Ok)
             {
                 return false;

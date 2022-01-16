@@ -1,7 +1,7 @@
 ﻿using Microsoft.Playwright;
 using System.Threading.Tasks;
 
-namespace backofficeTest
+namespace backofficeTest.Helpers
 {
     public static class IPageExtensions
     {
