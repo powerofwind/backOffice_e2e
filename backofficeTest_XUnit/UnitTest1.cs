@@ -64,12 +64,12 @@ namespace backofficeTest_XUnit
        //     res.Should().Be(true);
        // }
 
-        [Fact(DisplayName = "(Ticket) ทำการ Reopen เพื่อกลับมาแก้ไขปัญหาของงานที่ถูกปิดไปแล้วได้")]
-        public async Task ReOpenTicket()
-        {
-            var sut = new SetUpProject();
-            var res = await sut.ReOpenTicket("https://thman-test.onmana.space/app/index.html#/ticket","ticket");
-            Assert.Equal(true, res);
-        }
+        //[Fact(DisplayName = "(Ticket) ทำการ Reopen เพื่อกลับมาแก้ไขปัญหาของงานที่ถูกปิดไปแล้วได้")]
+        //public async Task ReOpenTicket()
+        //{
+        //    var sut = new SetUpProject();
+        //    var res = await sut.ReOpenTicket("https://thman-test.onmana.space/app/index.html#/ticket","ticket");
+        //    Assert.Equal(true, res);
+        //}
     }
 }

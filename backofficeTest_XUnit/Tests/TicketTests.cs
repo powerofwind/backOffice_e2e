@@ -2,6 +2,7 @@
 using backofficeTest.Steps;
 using backofficeTest_XUnit.Helpers;
 using FluentAssertions;
+using Microsoft.Playwright;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -22,7 +23,7 @@ namespace backofficeTest_XUnit.Tests
         }
 
         [Fact(DisplayName = "(Ticket) สามารถสร้าง Ticket ที่ยังไม่มีคนรับเรื่องได้")]
-        [TestPriority(1)]
+        [TestPriority(100)]
         public async Task InputAllValidThenCanCreateNewTicket()
         {
             var sut = new TicketStep();
@@ -31,6 +32,63 @@ namespace backofficeTest_XUnit.Tests
             result.isSuccess.Should().BeTrue();
             var content = await result.page.ContentAsync();
             content.Should().Contain(desc);
+        }
+
+        [Fact(DisplayName = "(Ticket) สามารถกดย้ายงานกลับได้")]
+        [TestPriority(200)]
+        public async Task TicketInMineCanBeRollback()
+        {
+            var sut = new TicketStep();
+            var result = await sut.RollbackLastestTicket();
+
+            var content = await result.page.ContentAsync();
+            content.Should().Contain(result.cardOwnerName);
+        }
+
+        [Fact(DisplayName = "(Ticket) สามารถกดรับงานที่ยังไม่มีคนรับได้")]
+        [TestPriority(300)]
+        public async Task TicketCanBeTaken()
+        {
+            var sut = new TicketStep();
+            var result = await sut.TakeLastestTicket();
+
+            var page = result.page;
+            await page.GotoAsync(Pages.Ticket);
+            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Mine?search=&page=-1";
+            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
+            var content = await page.ContentAsync();
+            content.Should().Contain(result.cardOwnerName);
+        }
+
+        [Fact(DisplayName = "(Ticket) ปิด Ticket ที่มี Issue ที่ยังแก้ไม่เสร็จได้")]
+        [TestPriority(400)]
+        public async Task CloseTicketWithIncompleteStatus()
+        {
+            var sut = new TicketStep();
+            var result = await sut.CloseTicketWithIncompleteStatus();
+
+            var page = result.page;
+            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Done?search=&page=-1";
+            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Done\")"), GetMineTicketApi);
+            var content = await page.ContentAsync();
+            content.Should().Contain(result.cardOwnerName);
+        }
+
+        [Fact(DisplayName = "(Ticket) ทำการ Reopen เพื่อกลับมาแก้ไขปัญหาของงานที่ถูกปิดไปแล้วได้")]
+        [TestPriority(500)]
+        public async Task ReOpenTicket()
+        {
+            var sut = new TicketStep();
+            var result = await sut.ReOpenTicket();
+
+            var page = result.page;
+            await page.GotoAsync(Pages.Ticket);
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Mine?search=&page=-1";
+            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
+            var content = await page.ContentAsync();
+            content.Should().Contain(result.cardOwnerName);
         }
 
         // TODO: มี 2 กรณี
@@ -47,45 +105,5 @@ namespace backofficeTest_XUnit.Tests
         //    var content = await result.page.ContentAsync();
         //    content.Should().NotContain(desc);
         //}
-
-        [Fact(DisplayName = "(Ticket) สามารถกดย้ายงานกลับได้")]
-        [TestPriority(3)]
-        public async Task TicketInMineCanBeRollback()
-        {
-            var sut = new TicketStep();
-            var result = await sut.RollbackLastestTicket();
-
-            var content = await result.page.ContentAsync();
-            content.Should().Contain(result.cardOwnerName);
-        }
-
-        [Fact(DisplayName = "(Ticket) สามารถกดรับงานที่ยังไม่มีคนรับได้")]
-        [TestPriority(4)]
-        public async Task TicketCanBeTaken()
-        {
-            var sut = new TicketStep();
-            var result = await sut.TakeLastestTicket();
-
-            var page = result.page;
-            await page.GotoAsync(Pages.Ticket);
-            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Mine?search=&page=-1";
-            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
-            var content = await page.ContentAsync();
-            content.Should().Contain(result.cardOwnerName);
-        }
-
-        [Fact(DisplayName = "(Ticket) ปิด Ticket ที่มี Issue ที่ยังแก้ไม่เสร็จได้")]
-        [TestPriority(5)]
-        public async Task CloseTicketWithIncompleteStatus()
-        {
-            var sut = new TicketStep();
-            var result = await sut.CloseTicketWithIncompleteStatus();
-
-            var page = result.page;
-            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Done?search=&page=-1";
-            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Done\")"), GetMineTicketApi);
-            var content = await page.ContentAsync();
-            content.Should().Contain(result.cardOwnerName);
-        }
     }
 }

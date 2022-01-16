@@ -91,5 +91,26 @@ namespace backofficeTest.Steps
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             return (page, cardOwnerName);
         }
+
+        public async Task<(IPage page, string cardOwnerName)> ReOpenTicket()
+        {
+            var page = await PageFactory.CreatePage().DoLogin();
+            await page.GotoAsync(Pages.Ticket);
+            await page.ClickAsync("ion-segment-button:has-text(\"Done\")");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            var cardOwnerName = await page.InnerTextAsync("ion-card:last-child h2:first-child");
+            await page.ClickAsync("ion-card:first-child");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            await page.ClickAsync("text=Pencil Reopen ticket >> button");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "test reopen");
+
+            await page.ClickAsync("text=บันทึก >> span");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            return (page, cardOwnerName);
+        }
     }
 }
