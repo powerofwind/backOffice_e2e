@@ -63,5 +63,124 @@ namespace backofficeTest_XUnit
         //    var res = await sut.ReOpenTicket();
         //    Assert.Equal(true, res);
         //}
+
+        [Fact(DisplayName = "(Ticket) Admin - สั่ง Logout user")]
+        public async Task TicketForceLogout()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.TicketForceLogout();
+            Assert.Equal(true, res);
+        }
+
+        [Fact(DisplayName = "(Ticket) ส่งคำขอการระงับบัญชี User ได้")]
+        public async Task TicketForceFrozen()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.TicketForceFrozen();
+            Assert.Equal(true, res);
+        }
+
+        [Fact(DisplayName = "(Ticket) ขอ Consent ข้อมูลธุรกรรมไปยัง User ได้")]
+        public async Task TicketUserConsent()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.TicketUserConsent();
+            Assert.Equal(true, res);
+        }
+
+        [Fact(DisplayName = "(Ticket) ขอ Consent ข้อมูลธุรกรรมไปยัง Manager ได้")]
+        public async Task TicketManagerConsent()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.TicketManagerConsent();
+            Assert.Equal(true, res);
+        }
+
+        [Fact(DisplayName = "(Frozen) ส่งคำขอยกเลิกการระงับบัญชี User ได้")]
+        public async Task UnFrozen()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.UnFrozen();
+            Assert.Equal(true, res);
+        }
+
+        [Fact(DisplayName = "(Frozen) ขอ Consent ข้อมูลผู้ใช้ไปยัง User ได้")]
+        public async Task FrozenUserConsent()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.FrozenUserConsent();
+            Assert.Equal(true, res);
+        }
+
+        [Fact(DisplayName = "(Frozen) ขอ Consent ข้อมูลผู้ใช้ไปยัง Manager ได้")]
+        public async Task FrozenManagerConsent()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.FrozenManagerConsent();
+            Assert.Equal(true, res);
+        }
+
+        [Fact(DisplayName = "(Fraud) สั่ง Logout user ได้")]
+        public async Task FraudForceLogout()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.FraudForceLogout();
+            Assert.Equal(true, res);
+        }
+
+        [Fact(DisplayName = "(Fraud) ส่งคำขอการระงับบัญชี User ได้")]
+        public async Task FraudForceFrozen()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.FraudForceFrozen();
+            Assert.Equal(true, res);
+        }
+
+        [Fact(DisplayName = "(Fraud) ขอ Consent ข้อมูลธุรกรรมไปยัง User ได้")]
+        public async Task FraudUserConsent()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.FraudUserConsent();
+            Assert.Equal(true, res);
+        }
+
+        [Fact(DisplayName = "(Fraud) ขอ Consent ข้อมูลธุรกรรมไปยัง Manager ได้")]
+        public async Task FraudManagerConsent()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.FraudUserConsent();
+            Assert.Equal(true, res);
+        }
+
+        [Fact(DisplayName = "(User(KYC)) สั่ง Logout user ได้")]
+        public async Task UserKYCForceLogout()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.UserKYCForceLogout();
+            Assert.Equal(true, res);
+        }
+
+        [Fact(DisplayName = "(User(KYC)) ส่งคำขอการระงับบัญชี User ได้")]
+        public async Task UserKYCForceFrozen()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.UserKYCForceFrozen();
+            Assert.Equal(true, res);
+        }
+
+        [Fact(DisplayName = "(User(KYC)) ขอ Consent ข้อมูล KYC ไปยัง User ได้")]
+        public async Task UserKYCUserConsent()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.UserKYCUserConsent();
+            Assert.Equal(true, res);
+        }
+
+        [Fact(DisplayName = "(User(KYC)) ขอ Consent ข้อมูล KYC ไปยัง Manager ได้")]
+        public async Task UserKYCManagerConsent()
+        {
+            var sut = new SetUpProject();
+            var res = await sut.UserKYCManagerConsent();
+            Assert.Equal(true, res);
+        }
     }
-}

@@ -238,5 +238,254 @@ namespace backofficeTest
             await page.ClickAsync("button >> nth=-1");
             return true;
         }
+
+        public async Task<bool> TicketForceLogout()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=จัดการ >> span");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("button >> nth=-1");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Logout");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=บันทึก >> button");
+            await page.WaitForTimeoutAsync(3000);
+
+            return true;
+        }
+
+        public async Task<bool> TicketForceFrozen()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=จัดการ >> span");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=ดำเนินการ >> button");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Frozen");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=บันทึก >> button");
+            await page.WaitForTimeoutAsync(3000);
+
+            return true;
+        }
+
+        public async Task<bool> TicketUserConsent()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text= ขอ User  >> span");
+            await page.WaitForTimeoutAsync(1000);
+
+            return true;
+        }
+
+        public async Task<bool> TicketManagerConsent()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/ticket");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text= ขอ Manager  >> span");
+            await page.WaitForTimeoutAsync(1000);
+
+            return true;
+        }
+
+        public async Task<bool> UnFrozen()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/frozen");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+
+            return true;
+        }
+
+        public async Task<bool> FrozenUserConsent()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/frozen");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text= ขอ User  >> span");
+            await page.WaitForTimeoutAsync(1000);
+
+            return true;
+        }
+
+        public async Task<bool> FrozenManagerConsent()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/frozen");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text= ขอ Manager  >> span");
+            await page.WaitForTimeoutAsync(1000);
+
+            return true;
+        }
+
+        public async Task<bool> FraudForceLogout()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/fraud");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=จัดการ >> span");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("button >> nth=-1");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Logout");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=บันทึก >> button");
+            await page.WaitForTimeoutAsync(3000);
+
+            return true;
+        }
+
+        public async Task<bool> FraudForceFrozen()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/fraud");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=จัดการ >> span");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=ดำเนินการ >> button");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Frozen");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=บันทึก >> button");
+            await page.WaitForTimeoutAsync(3000);
+
+            return true;
+        }
+
+        public async Task<bool> FraudUserConsent()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/fraud");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text= ขอ User  >> span");
+            await page.WaitForTimeoutAsync(1000);
+
+            return true;
+        }
+
+        public async Task<bool> FraudManagerConsent()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/fraud");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text= ขอ Manager  >> span");
+            await page.WaitForTimeoutAsync(1000);
+
+            return true;
+        }
+
+        public async Task<bool> UserKYCForceLogout()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/user");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=จัดการ >> span");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("button >> nth=-1");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Logout");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=บันทึก >> button");
+            await page.WaitForTimeoutAsync(3000);
+
+            return true;
+        }
+
+        public async Task<bool> UserKYCForceFrozen()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/user");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=จัดการ >> span");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=ดำเนินการ >> button");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("textarea[name=\"ion-textarea-0\"]");
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Frozen");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text=บันทึก >> button");
+            await page.WaitForTimeoutAsync(3000);
+
+            return true;
+        }
+
+        public async Task<bool> UserKYCUserConsent()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/user");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text= ขอ User  >> span");
+            await page.WaitForTimeoutAsync(1000);
+
+            return true;
+        }
+
+        public async Task<bool> UserKYCManagerConsent()
+        {
+            var browser = await BeforeScenario();
+            await page.GotoAsync("https://thman-test.onmana.space/app/index.html#/user");
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("ion-card:nth-child(1)");
+            await page.WaitForTimeoutAsync(1000);
+            await page.ClickAsync("text= ขอ Manager  >> span");
+            await page.WaitForTimeoutAsync(1000);
+
+            return true;
+        }
     }
 }
