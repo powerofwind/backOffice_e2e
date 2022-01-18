@@ -1,13 +1,13 @@
 ﻿using Microsoft.Playwright;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace backofficeTest.Helpers
 {
     public static class PageFactory
     {
+        public static string StorageStatePath = "state.json";
         private volatile static IPlaywright playwright;
-        private volatile static IBrowserContext browserContext;
+        private volatile static TaskCompletionSource<IBrowserContext> contextTask;
 
         /// <summary>
         /// Creates a new page.
@@ -17,14 +17,25 @@ namespace backofficeTest.Helpers
         public static async Task<IPage> CreatePage(float? slomotion = null)
         {
             playwright ??= await Playwright.CreateAsync();
-            browserContext ??= await playwright.Chromium
-                .LaunchPersistentContextAsync(nameof(PageFactory),
-                new BrowserTypeLaunchPersistentContextOptions
+            if (null == contextTask)
+            {
+                contextTask = new TaskCompletionSource<IBrowserContext>();
+                var browser = await playwright.Chromium
+                    .LaunchAsync(new BrowserTypeLaunchOptions
+                    {
+                        Headless = false,
+                        SlowMo = slomotion,
+                    });
+                var contextOptions = new BrowserNewContextOptions
                 {
-                    Headless = false,
-                    SlowMo = slomotion,
-                });
-            return browserContext.Pages.FirstOrDefault();
+                    StorageStatePath = StorageStatePath
+                };
+                var browserContext = await browser.NewContextAsync(contextOptions);
+                contextTask.TrySetResult(browserContext);
+            }
+
+            var context = await contextTask.Task;
+            return await context.NewPageAsync();
         }
     }
 }
