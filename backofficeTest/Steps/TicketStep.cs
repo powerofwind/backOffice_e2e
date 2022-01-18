@@ -105,7 +105,9 @@ namespace backofficeTest.Steps
             await page.ClickAsync("text=Pencil Reopen ticket >> button");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "test reopen");
-            await page.ClickAsync("text=บันทึก >> span");
+
+            var ticketDetailApi = $"https://thman-test.onmana.space/api/Ticket/{ticketId}?page=-1";
+            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=บันทึก >> span"), ticketDetailApi);
             await page.WaitForURLAsync($"{Pages.Ticket}/detail/{ticketId}");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             return (page, cardOwnerName);
@@ -120,18 +122,22 @@ namespace backofficeTest.Steps
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             var cardOwnerName = await page.InnerTextAsync("ion-card:last-child h2:first-child");
             await page.ClickAsync("ion-card:last-child");
+            var ticketId = page.Url.Split('/', StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
+            var ticketDetailApi = $"https://thman-test.onmana.space/api/Ticket/{ticketId}?page=-1";
+            await page.WaitForResponseAsync(ticketDetailApi);
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
             do
             {
                 try
                 {
-                    await page.ClickAsync("label:has-text(\"ยังไม่ถูกแก้\")", new PageClickOptions { Timeout = 1500 });
+                    await page.WaitForSelectorAsync("label:has-text(\"ยังไม่ถูกแก้\")", new PageWaitForSelectorOptions { Timeout = 1500 });
                 }
                 catch (Exception)
                 {
                     break;
                 }
+                await page.ClickAsync("label:has-text(\"ยังไม่ถูกแก้\")");
                 await page.ClickAsync("button[role=\"radio\"]:has-text(\"แก้สำเร็จแล้ว\")");
                 await page.ClickAsync("button:has-text(\"OK\")");
                 await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
