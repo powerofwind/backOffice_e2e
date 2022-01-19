@@ -1,11 +1,13 @@
 ﻿using backofficeTest.Helpers;
+using Microsoft.Playwright;
+using System;
 using System.Threading.Tasks;
 
 namespace backofficeTest.Steps
 {
     public class FraudStep
     {
-        public async Task<bool> CreateNewFraud(string paId)
+        public async Task<(bool validatePaId, IPage page)> CreateNewFraud(string paId, string desc)
         {
             var page = await PageFactory.CreatePage().DoLogin();
             await page.GotoAsync(Pages.Fraud);
@@ -17,27 +19,38 @@ namespace backofficeTest.Steps
             var validatePaIdResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=ตรวจสอบข้อมูล"), ValidatePaIdApi);
             if (false == validatePaIdResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
-            const string SaveFraudApi = "https://thman-test.onmana.space/api/Ticket/status";
+            const string SaveFraudApi = "https://thman-test.onmana.space/api/user/getoperatorinfo";
             var submitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=บันทึก >> button"), SaveFraudApi);
-            if (false == submitResponse.Ok)
-            {
-                return false;
-            }
 
             await page.ClickAsync("textarea");
-            await page.FillAsync("textarea", "มีเงินมากกว่า 1,000,000 ใน 1 วัน");
+            await page.FillAsync("textarea", desc);
+
             await page.ClickAsync("text=บันทึก >> button");
-            await page.WaitForTimeoutAsync(1000);
-            await page.ClickAsync("text=ย้ายกลับ >> button");
-            await page.WaitForTimeoutAsync(1000);
-            await page.ClickAsync("textarea");
-            await page.FillAsync("textarea", "คืนงานนะ");
-            await page.WaitForTimeoutAsync(1000);
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            return (true, page);
+        }
+
+        public async Task<(IPage page, string cardOwnerName)> RollbackLastestTicket()
+        {
+            var page = await PageFactory.CreatePage().DoLogin();
+            await page.GotoAsync(Pages.Fraud);
+
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            var cardOwnerName = await page.InnerTextAsync("ion-card:last-child h2:first-child");
+            await page.ClickAsync("ion-card:last-child");
+
+            await page.ClickAsync("text=Return Up Back ย้ายกลับ >> button");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Fraud ย้ายงานกลับ");
             await page.ClickAsync("button >> nth=-1");
-            return true;
+            await page.WaitForURLAsync(Pages.Fraud);
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            return (page, cardOwnerName);
         }
     }
 }
