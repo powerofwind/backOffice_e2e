@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace backofficeTest_XUnit.Helpers
+namespace E2E.Shared.Tests
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class TestPriorityAttribute : Attribute

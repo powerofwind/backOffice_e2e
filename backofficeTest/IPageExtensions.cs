@@ -1,22 +1,24 @@
-﻿using Microsoft.Playwright;
+﻿using E2E.Shared;
+using Microsoft.Playwright;
 using System.Threading.Tasks;
 
-namespace backofficeTest.Helpers
+namespace backofficeTest
 {
     public static class IPageExtensions
     {
-        private static volatile TaskCompletionSource<IPage> loginPageTask;
+        private static volatile TaskCompletionSource<IPage> backofficeLoginPageTask;
+
 
         public static async Task<IPage> DoLogin(this Task<IPage> targetPage)
         {
-            if (null == loginPageTask)
+            if (null == backofficeLoginPageTask)
             {
-                loginPageTask ??= new TaskCompletionSource<IPage>();
+                backofficeLoginPageTask ??= new TaskCompletionSource<IPage>();
                 var loginPage = await handleLoginStep();
-                loginPageTask.TrySetResult(loginPage);
+                backofficeLoginPageTask.TrySetResult(loginPage);
                 return loginPage;
             }
-            await loginPageTask.Task;
+            await backofficeLoginPageTask.Task;
             return await targetPage;
 
             async Task<IPage> handleLoginStep()

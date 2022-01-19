@@ -3,7 +3,7 @@ using System.Linq;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace backofficeTest_XUnit.Helpers
+namespace E2E.Shared.Tests
 {
     public class PriorityOrderer : ITestCaseOrderer
     {
