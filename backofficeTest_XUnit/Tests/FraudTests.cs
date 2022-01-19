@@ -1,6 +1,5 @@
-﻿using backofficeTest;
-using backofficeTest.Steps;
-using backofficeTest_XUnit.Helpers;
+﻿using backofficeTest.Steps;
+using E2E.Shared.Tests;
 using FluentAssertions;
 using System;
 using System.Threading.Tasks;
@@ -17,7 +16,7 @@ namespace backofficeTest_XUnit.Tests
             var result = await sut.CreateNewFraud("0000000000000", null);
             result.validatePaId.Should().BeFalse();
         }
-        
+
         [Fact(DisplayName = "(Fraud) สร้าง fraud โดยใช้เลขบัตรประชาชนที่ผ่านการ KYC ได้")]
         [TestPriority(100)]
         public async Task InputPaIdWithKycThenCanCreate()

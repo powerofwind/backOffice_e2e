@@ -1,7 +1,7 @@
 ﻿using Microsoft.Playwright;
 using System.Threading.Tasks;
 
-namespace backofficeTest.Helpers
+namespace E2E.Shared
 {
     public static class PageFactory
     {
@@ -13,8 +13,9 @@ namespace backofficeTest.Helpers
         /// Creates a new page.
         /// </summary>
         /// <param name="slomotion">Slows down Playwright operations by the specified amount of milliseconds. Useful so that you can see what is going on.</param>
+        /// <param name="headless">Whether to run browser in headless mode.</param>
         /// <returns>Testable page.</returns>
-        public static async Task<IPage> CreatePage(float? slomotion = null)
+        public static async Task<IPage> CreatePage(float? slomotion = null, bool headless = false)
         {
             playwright ??= await Playwright.CreateAsync();
             if (null == contextTask)
@@ -23,7 +24,7 @@ namespace backofficeTest.Helpers
                 var browser = await playwright.Chromium
                     .LaunchAsync(new BrowserTypeLaunchOptions
                     {
-                        Headless = false,
+                        Headless = headless,
                         SlowMo = slomotion,
                     });
                 var contextOptions = new BrowserNewContextOptions

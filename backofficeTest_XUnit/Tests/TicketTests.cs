@@ -1,6 +1,6 @@
 ﻿using backofficeTest;
 using backofficeTest.Steps;
-using backofficeTest_XUnit.Helpers;
+using E2E.Shared.Tests;
 using FluentAssertions;
 using System;
 using System.Threading.Tasks;

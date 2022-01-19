@@ -1,9 +1,7 @@
-﻿using backofficeTest.Helpers;
+﻿using E2E.Shared;
 using Microsoft.Playwright;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace backofficeTest.Steps
