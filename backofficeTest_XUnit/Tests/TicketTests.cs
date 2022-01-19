@@ -53,6 +53,7 @@ namespace backofficeTest_XUnit.Tests
             var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
             var qry = await page.QuerySelectorAllAsync(targetTicketSelector);
             qry.Count.Should().Be(0);
+            await result.page.CloseAsync();
         }
 
         [Fact(DisplayName = "(Ticket) สามารถกดรับงานที่ยังไม่มีคนรับได้")]
