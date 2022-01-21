@@ -60,8 +60,45 @@ namespace backofficeTest_XUnit.Tests
             await page.CloseAsync();
         }
 
-        [Fact(DisplayName = "(User(KYC)) สั่ง Logout user ได้")]
+        [Fact(DisplayName = "(Ticket) ขอ Consent ข้อมูลธุรกรรมไปยัง User ได้")]
         [TestPriority(400)]
+        public async Task SentConsentInfo2User()
+        {
+            var sut = new User_PA_Step();
+            var result = await sut.SentConsentInfo2User();
+            result.Should().BeTrue();
+        }
+
+        //TODO: MANA APP user DENY CONSENT
+        //TODO: MANA APP user APPROVE CONSENT**
+
+        //[Fact(DisplayName = "(Ticket) ขอ Consent ข้อมูลธุรกรรมไปยัง Manager ได้")]
+        //[TestPriority(600)]
+        //public async Task SentConsentInfo2Manager()
+        //{
+        //    var sut = new User_PA_Step();
+        //    var result = await sut.SentConsentInfo2Manager();
+        //    result.Should().BeTrue();
+        //}
+
+        //TODO: MANA APP manager DENY CONSENT**
+        //TODO: MANA APP manager APPROVE CONSENT
+
+        [Fact(DisplayName = "(User (KYC)) ส่งคำขอการระงับบัญชี User ได้")]
+        [TestPriority(800)]
+        public async Task SentConsent4FreezeTicket()
+        {
+            var sut = new User_PA_Step();
+            var result = await sut.FreezeTicket();
+            result.Should().BeTrue();
+        }
+
+        //TODO: MANA APP manager DENY CONSENT**
+        //TODO: MANA APP manager APPROVE CONSENT
+        //Wait FreezonTest
+
+        [Fact(DisplayName = "(User(KYC)) สั่ง Logout user ได้")]
+        [TestPriority(1000)]
         public async Task ForceUserLogout()
         {
             var sut = new User_PA_Step();
@@ -69,13 +106,6 @@ namespace backofficeTest_XUnit.Tests
             result.Should().BeTrue();
         }
 
-        [Fact(DisplayName = "(User (KYC)) ส่งคำขอการระงับบัญชี User ได้")]
-        [TestPriority(500)]
-        public async Task SentConsent4FreezeTicket()
-        {
-            var sut = new User_PA_Step();
-            var result = await sut.FreezeTicket();
-            result.Should().BeTrue();
-        }
+        //ปิดงาน
     }
 }

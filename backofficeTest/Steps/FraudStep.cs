@@ -113,5 +113,54 @@ namespace backofficeTest.Steps
             }
             return true;
         }
+
+        public async Task<bool> FreezeTicket()
+        {
+            var page = await PageFactory.CreatePage().DoLogin();
+            await page.GotoAsync(Pages.Fraud);
+
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.ClickAsync("ion-card:last-child");
+
+            await page.ClickAsync("text=จัดการ >> span");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.ClickAsync("text=ดำเนินการ >> button");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Fraud Freeze");
+            const string FreezeTicketApi = "https://thman-test.onmana.space/api/User/freeze";
+            var FreezeTicketResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button >> nth=-1"), FreezeTicketApi);
+
+            if (false == FreezeTicketResponse.Ok)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<bool> LogOutTicket()
+        {
+            var page = await PageFactory.CreatePage().DoLogin();
+            await page.GotoAsync(Pages.Fraud);
+
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.ClickAsync("ion-card:last-child");
+
+            await page.ClickAsync("text=จัดการ >> span");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            await page.ClickAsync("text=สั่ง Logout บัญชีนี้ออกจากระบบ manaดำเนินการ >> button");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Fraud Logout");
+            const string LogOutTicketApi = "https://thman-test.onmana.space/api/User/logout";
+            var LogOutTicketResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button >> nth=-1"), LogOutTicketApi);
+
+            if (false == LogOutTicketResponse.Ok)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

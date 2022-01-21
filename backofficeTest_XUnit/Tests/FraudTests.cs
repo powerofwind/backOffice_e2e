@@ -72,13 +72,44 @@ namespace backofficeTest_XUnit.Tests
             result.Should().BeTrue();
         }
 
+        //TODO: MANA APP manager DENY CONSENT
+        //TODO: MANA APP manager APPROVE CONSENT**
+
         [Fact(DisplayName = "(Fraud) ขอ Consent ข้อมูลธุรกรรมไปยัง Manager ได้")]
-        [TestPriority(400)]
+        [TestPriority(600)]
         public async Task SentConsentInfo2Manager()
         {
             var sut = new FraudStep();
             var result = await sut.SentConsentInfo2Manager();
             result.Should().BeTrue();
         }
+
+        //TODO: MANA APP manager DENY CONSENT**
+        //TODO: MANA APP manager APPROVE CONSENT
+
+        [Fact(DisplayName = "(Fraud) ส่งคำขอการระงับบัญชี User ได้")]
+        [TestPriority(800)]
+        public async Task SentConsent4FreezeTicket()
+        {
+            var sut = new FraudStep();
+            var result = await sut.FreezeTicket();
+            result.Should().BeTrue();
+        }
+
+        //TODO: MANA APP manager DENY CONSENT
+        //TODO: MANA APP manager APPROVE CONSENT
+        //Wait FreezonTest
+
+        [Fact(DisplayName = "(Fraud) สั่ง Logout user ได้")]
+        [TestPriority(1000)]
+        public async Task ForceUserLogout()
+        {
+            var sut = new FraudStep();
+            var result = await sut.LogOutTicket();
+            result.Should().BeTrue();
+        }
+
+        //ปิดงาน
+
     }
 }

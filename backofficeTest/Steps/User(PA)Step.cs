@@ -94,5 +94,45 @@ namespace backofficeTest.Steps
             }
             return true;
         }
+
+        public async Task<bool> SentConsentInfo2User()
+        {
+            var page = await PageFactory.CreatePage().DoLogin();
+            await page.GotoAsync(Pages.User);
+
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.ClickAsync("ion-card:last-child");
+
+            const string sentConsentApi = "https://thman-test.onmana.space/api/User/userinfo/consent";
+            var sentConsentResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text= ขอ User  >> span"), sentConsentApi);
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            if (false == sentConsentResponse.Ok)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<bool> SentConsentInfo2Manager()
+        {
+            var page = await PageFactory.CreatePage().DoLogin();
+            await page.GotoAsync(Pages.User);
+
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.ClickAsync("ion-card:last-child");
+
+            const string sentConsentApi = "https://thman-test.onmana.space/api/User/userinfo/consent";
+            var sentConsentResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text= ขอ Manager  >> span"), sentConsentApi);
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            if (false == sentConsentResponse.Ok)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
