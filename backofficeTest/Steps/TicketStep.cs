@@ -145,8 +145,8 @@ namespace backofficeTest.Steps
             {
                 try
                 {
-                    await page.WaitForSelectorAsync($"text=วันที่", new PageWaitForSelectorOptions { Timeout = 5000 });
-                    await page.WaitForSelectorAsync("label:has-text(\"ยังไม่ถูกแก้\")", new PageWaitForSelectorOptions { Timeout = 1000 });
+                    //await page.WaitForSelectorAsync($"text=วันที่", new PageWaitForSelectorOptions { Timeout = 5000 });
+                    await page.WaitForSelectorAsync("label:has-text(\"ยังไม่ถูกแก้\")", new PageWaitForSelectorOptions { Timeout = 5000 });
                 }
                 catch (Exception)
                 {

@@ -10,17 +10,89 @@ namespace backofficeTest.Steps
 {
     public class User_PA_Step
     {
-        public async Task<(IPage page, string cardOwnerName)> TakeLastestTicket()
+        public async Task<(IPage page, string ticketId)> TakeLastestTicket()
         {
             var page = await PageFactory.CreatePage().DoLogin();
             await page.GotoAsync(Pages.User);
 
-            var cardOwnerName = await page.InnerTextAsync("ion-card:last-child h2:first-child");
             await page.ClickAsync("ion-card:last-child button");
+            const string AcceptTicketApi = "https://thman-test.onmana.space/api/user/getoperatorinfo";
+            var acceptTicketResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-card:last-child button"), AcceptTicketApi);
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
             var ticketId = page.Url.Split('/', StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
             await page.WaitForURLAsync($"{Pages.User}/detail/{ticketId}");
-            return (page, cardOwnerName);
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            return (page, ticketId);
+        }
+
+        public async Task<(IPage page, string ticketId)> RollbackLastestTicket()
+        {
+            var page = await PageFactory.CreatePage().DoLogin();
+            await page.GotoAsync(Pages.User);
+
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.ClickAsync("ion-card:last-child");
+
+            await page.WaitForTimeoutAsync(300);
+            var ticketId = page.Url.Split('/', StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
+            await page.ClickAsync("text=Return Up Back ย้ายกลับ >> button");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Fraud ย้ายงานกลับ");
+            await page.ClickAsync("button >> nth=-1");
+            await page.WaitForURLAsync(Pages.User);
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            return (page, ticketId);
+        }
+
+        public async Task<bool> LogOutTicket()
+        {
+            var page = await PageFactory.CreatePage().DoLogin();
+            await page.GotoAsync(Pages.User);
+
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.ClickAsync("ion-card:last-child");
+
+            await page.ClickAsync("text=จัดการ >> span");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            await page.ClickAsync("text=สั่ง Logout บัญชีนี้ออกจากระบบ manaดำเนินการ >> button");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Logout");
+            const string LogOutTicketApi = "https://thman-test.onmana.space/api/User/logout";
+            var LogOutTicketResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button >> nth=-1"), LogOutTicketApi);
+
+            if (false == LogOutTicketResponse.Ok)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<bool> FreezeTicket()
+        {
+            var page = await PageFactory.CreatePage().DoLogin();
+            await page.GotoAsync(Pages.User);
+
+            await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.ClickAsync("ion-card:last-child");
+
+            await page.ClickAsync("text=จัดการ >> span");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.ClickAsync("text=ดำเนินการ >> button");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Freeze");
+            const string FreezeTicketApi = "https://thman-test.onmana.space/api/User/freeze";
+            var FreezeTicketResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button >> nth=-1"), FreezeTicketApi);
+
+            if (false == FreezeTicketResponse.Ok)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
