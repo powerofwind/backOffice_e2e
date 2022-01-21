@@ -38,8 +38,47 @@ namespace backofficeTest_XUnit.Tests
             var sut = new FraudStep();
             var result = await sut.RollbackLastestTicket();
 
-            var content = await result.page.ContentAsync();
-            content.Should().Contain(result.cardOwnerName);
+            var page = result.page;
+            await page.WaitForSelectorAsync("ion-card");
+            var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
+            var qry = await page.QuerySelectorAllAsync(targetTicketSelector);
+            qry.Count.Should().Be(0);
+            await result.page.CloseAsync();
+        }
+
+        [Fact(DisplayName = "(Fraud) สามารถกดรับงานได้สำเร็จ")]
+        [TestPriority(300)]
+        public async Task TicketCanBeTaken()
+        {
+            var sut = new FraudStep();
+            var result = await sut.TakeLastestTicket();
+
+            var page = result.page;
+            await page.GotoAsync(Pages.Fraud);
+            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Fraud/list/Mine?search=&page=-1";
+            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
+
+            var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
+            await page.WaitForSelectorAsync(targetTicketSelector);
+            await page.CloseAsync();
+        }
+
+        [Fact(DisplayName = "(Fraud) ขอ Consent ข้อมูลธุรกรรมไปยัง User ได้")]
+        [TestPriority(400)]
+        public async Task SentConsentInfo2User()
+        {
+            var sut = new FraudStep();
+            var result = await sut.SentConsentInfo2User();
+            result.Should().BeTrue();
+        }
+
+        [Fact(DisplayName = "(Fraud) ขอ Consent ข้อมูลธุรกรรมไปยัง Manager ได้")]
+        [TestPriority(400)]
+        public async Task SentConsentInfo2Manager()
+        {
+            var sut = new FraudStep();
+            var result = await sut.SentConsentInfo2Manager();
+            result.Should().BeTrue();
         }
     }
 }

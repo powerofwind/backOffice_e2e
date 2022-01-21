@@ -39,7 +39,7 @@ namespace backofficeTest.Steps
             var ticketId = page.Url.Split('/', StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
             await page.ClickAsync("text=Return Up Back ย้ายกลับ >> button");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Fraud ย้ายงานกลับ");
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "User(PA) ย้ายงานกลับ");
             await page.ClickAsync("button >> nth=-1");
             await page.WaitForURLAsync(Pages.User);
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
@@ -60,7 +60,7 @@ namespace backofficeTest.Steps
 
             await page.ClickAsync("text=สั่ง Logout บัญชีนี้ออกจากระบบ manaดำเนินการ >> button");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Logout");
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "User(PA) Logout");
             const string LogOutTicketApi = "https://thman-test.onmana.space/api/User/logout";
             var LogOutTicketResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button >> nth=-1"), LogOutTicketApi);
 
@@ -84,7 +84,7 @@ namespace backofficeTest.Steps
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page.ClickAsync("text=ดำเนินการ >> button");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "Freeze");
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "User(PA) Freeze");
             const string FreezeTicketApi = "https://thman-test.onmana.space/api/User/freeze";
             var FreezeTicketResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button >> nth=-1"), FreezeTicketApi);
 
