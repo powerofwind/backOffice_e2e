@@ -37,5 +37,40 @@ namespace backofficeTest.Helpers
                 return loginPage;
             }
         }
+
+        private static volatile TaskCompletionSource<IPage> manaLoginPageTask;
+
+        public static async Task<IPage> DoManaLogin(this Task<IPage> targetPage)
+        {
+            if (null == manaLoginPageTask)
+            {
+                manaLoginPageTask ??= new TaskCompletionSource<IPage>();
+                var loginPage = await handleLoginStep();
+                manaLoginPageTask.TrySetResult(loginPage);
+                return loginPage;
+            }
+            await manaLoginPageTask.Task;
+            return await targetPage;
+
+            async Task<IPage> handleLoginStep()
+            {
+                var loginPage = await targetPage;
+                await loginPage.GotoAsync("https://localhost:44364");
+                await loginPage.WaitForTimeoutAsync(15000);
+                //const string LoginButtonSelector = "text=Login";
+                //await loginPage.ClickAsync(LoginButtonSelector);
+
+                //await loginPage.WaitForTimeoutAsync(10000);
+                //var options = new PageWaitForNavigationOptions { UrlString = "https://localhost:44364" };
+                //await loginPage.WaitForNavigationAsync(options);
+                //await loginPage.WaitForLoadStateAsync(LoadState.NetworkIdle);
+                var contextStateOptions = new BrowserContextStorageStateOptions
+                {
+                    Path = PageFactory.StorageStatePath,
+                };
+                await loginPage.Context.StorageStateAsync(contextStateOptions);
+                return loginPage;
+            }
+        }
     }
 }
