@@ -85,16 +85,11 @@ namespace manaTest
         // ถอนเงินจากพร้อมเพย์ที่ผูกไว้ได้
         public async Task<bool> WithdrawPPaySuccess()
         {
-            var isInitSuccess = await ManaMcontent("https://localhost:44364/dev/visit?url=https://s.manal.ink/np/nfinanc-home");
-
-            if (!isInitSuccess)
-            {
-                return false;
-            }
+            var page = await PageFactory.CreatePage().DoManaLogin();
+            await page.GotoAsync("https://localhost:44364/dev/visit?url=https://s.manal.ink/np/nfinanc-home");
 
             await page.GotoAsync("http://localhost:8100/#/financial-menu");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            var dialogMessage = string.Empty;
 
             const string CreateWithdrawApi = "https://localhost:44364/mcontent/VisitEndpoint/%7B%22mcid%22:%22financial-menu%22,%22url%22:%22https%3A%2F%2Fs.manal.ink%2Fnp%2Fnwltwit-home%22%7D";
             var WithdrawResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-row:nth-child(2) ion-col:nth-child(3) img"), CreateWithdrawApi);
@@ -114,7 +109,7 @@ namespace manaTest
 
             await page.GotoAsync("http://localhost:8100/#/wallet-withdraw-bankaccount");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            page.Dialog += page_Dialog3_EventHandler;
+            page.Dialog += InputMoneyDlg;
             await page.ClickAsync("input[name=\"ion-input-1\"]");
 
             const string WithdrawAmountPPayApi = "https://localhost:44364/mcontent/Submit/";
@@ -124,13 +119,15 @@ namespace manaTest
                 return false;
             }
 
+            var confirmTask = new TaskCompletionSource<IDialog>();
+            var resultTask = new TaskCompletionSource<string>();
+
             await page.GotoAsync("http://localhost:8100/#/wallet-withdraw-bankaccount-confirm");
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            page.Dialog += page_Dialog2_EventHandler;
-            await page.WaitForTimeoutAsync(2000);
-            page.Dialog += page_Dialog5_EventHandler;
+            page.Dialog += ConfrimDlg;
             await page.ClickAsync("button");
-            await page.WaitForTimeoutAsync(6000);
+            await confirmTask.Task;
+            page.Dialog += ResultDlg;
+            var dialogMessage = await resultTask.Task;
 
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
@@ -139,23 +136,23 @@ namespace manaTest
             }
             return false;
 
-
-            void page_Dialog3_EventHandler(object sender, IDialog dialog)
+            void InputMoneyDlg(object sender, IDialog dialog)
             {
                 dialog.AcceptAsync("1.00");
-                page.Dialog -= page_Dialog3_EventHandler;
+                page.Dialog -= InputMoneyDlg;
             }
 
-            void page_Dialog2_EventHandler(object sender, IDialog dialog)
+            void ConfrimDlg(object sender, IDialog dialog)
             {
                 dialog.AcceptAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
+                page.Dialog -= ConfrimDlg;
+                confirmTask.TrySetResult(dialog);
             }
-            void page_Dialog5_EventHandler(object sender, IDialog dialog)
+
+            void ResultDlg(object sender, IDialog dialog)
             {
-                dialogMessage = dialog.Message;
-                dialog.DismissAsync();
-                page.Dialog -= page_Dialog5_EventHandler;
+                resultTask.TrySetResult(dialog.Message);
+                page.Dialog -= ResultDlg;
             }
         }
 
@@ -163,16 +160,11 @@ namespace manaTest
         // ถอนเงินจากบัญีธนาคารที่ผูกไว้ได้ 
         public async Task<bool> WithdrawBankingSuccess()
         {
-            var isInitSuccess = await ManaMcontent("https://localhost:44364/dev/visit?url=https://s.manal.ink/np/nfinanc-home");
-
-            if (!isInitSuccess)
-            {
-                return false;
-            }
+            var page = await PageFactory.CreatePage().DoManaLogin();
+            await page.GotoAsync("https://localhost:44364/dev/visit?url=https://s.manal.ink/np/nfinanc-home");
 
             await page.GotoAsync("http://localhost:8100/#/financial-menu");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            var dialogMessage = string.Empty;
 
             const string CreateWithdrawApi = "https://localhost:44364/mcontent/VisitEndpoint/%7B%22mcid%22:%22financial-menu%22,%22url%22:%22https%3A%2F%2Fs.manal.ink%2Fnp%2Fnwltwit-home%22%7D";
             var WithdrawResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-row:nth-child(2) ion-col:nth-child(3) img"), CreateWithdrawApi);
@@ -193,7 +185,7 @@ namespace manaTest
 
             await page.GotoAsync("http://localhost:8100/#/wallet-withdraw-bankaccount");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            page.Dialog += page_Dialog3_EventHandler;
+            page.Dialog += InputMoneyDlg;
             await page.ClickAsync("input[name=\"ion-input-1\"]");
 
             const string WithdrawAmountbankApi = "https://localhost:44364/mcontent/Submit/";
@@ -203,13 +195,15 @@ namespace manaTest
                 return false;
             }
 
+            var confirmTask = new TaskCompletionSource<IDialog>();
+            var resultTask = new TaskCompletionSource<string>();
+
             await page.GotoAsync("http://localhost:8100/#/wallet-withdraw-bankaccount-confirm");
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            page.Dialog += page_Dialog2_EventHandler;
-            await page.WaitForTimeoutAsync(2000);
-            page.Dialog += page_Dialog5_EventHandler;
+            page.Dialog += ConfirmDlg;
             await page.ClickAsync("button");
-            await page.WaitForTimeoutAsync(6000);
+            await confirmTask.Task;
+            page.Dialog += ResultDlg;
+            var dialogMessage = await resultTask.Task;
 
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
@@ -218,22 +212,23 @@ namespace manaTest
             }
             return false;
 
-            void page_Dialog3_EventHandler(object sender, IDialog dialog)
+            void InputMoneyDlg(object sender, IDialog dialog)
             {
                 dialog.AcceptAsync("1.00");
-                page.Dialog -= page_Dialog3_EventHandler;
+                page.Dialog -= InputMoneyDlg;
             }
 
-            void page_Dialog2_EventHandler(object sender, IDialog dialog)
+            void ConfirmDlg(object sender, IDialog dialog)
             {
                 dialog.AcceptAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
+                page.Dialog -= ConfirmDlg;
+                confirmTask.TrySetResult(dialog);
             }
-            void page_Dialog5_EventHandler(object sender, IDialog dialog)
+
+            void ResultDlg(object sender, IDialog dialog)
             {
-                dialogMessage = dialog.Message;
-                dialog.DismissAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
+                resultTask.TrySetResult(dialog.Message);
+                page.Dialog -= ResultDlg;
             }
         }
 

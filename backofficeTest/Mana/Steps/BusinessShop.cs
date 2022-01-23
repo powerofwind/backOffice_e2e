@@ -118,19 +118,16 @@ namespace manaTest
         // ถอนเงินออกจากร้าน Business เข้ากระเป๋าเงิน Mana ได้
         public async Task<bool> withdrawBusinessShop()
         {
-            var isInitSuccess = await ManaMcontent("https://localhost:44364/dev/visit?url=https://s.manal.ink/np/nbizdtl-637623474056077116$basic$shop");
-            if (!isInitSuccess)
-            {
-                return false;
-            }
+            var page = await PageFactory.CreatePage().DoManaLogin();
+            await page.GotoAsync("https://localhost:44364/dev/visit?url=https://s.manal.ink/np/nbizdtl-637623474056077116$basic$shop");
 
             await page.GotoAsync("http://localhost:8100/#/merchant-home-basic");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            var dialogMessage = string.Empty;
+
             await page.ClickAsync("text=ถอนเงิน");
             await page.GotoAsync("http://localhost:8100/#/merchant-withdraw");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            page.Dialog += page_Dialog3_EventHandler;
+            page.Dialog += InputMoneyDlg;
             await page.ClickAsync("input[name=\"ion-input-1\"]");
 
             const string WithdrawAmountBusinessApi = "https://localhost:44364/mcontent/Submit/";
@@ -140,15 +137,16 @@ namespace manaTest
                 return false;
             }
 
-            await page.GotoAsync("http://localhost:8100/#/merchant-withdraw-confirm");
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            await page.WaitForTimeoutAsync(2000);
-            page.Dialog += page_Dialog2_EventHandler;
-            await page.WaitForTimeoutAsync(2000);
-            page.Dialog += page_Dialog5_EventHandler;
-            await page.ClickAsync("button");
+            var confirmTask = new TaskCompletionSource<IDialog>();
+            var resultTask = new TaskCompletionSource<string>();
 
-            await page.WaitForTimeoutAsync(6000);
+            await page.GotoAsync("http://localhost:8100/#/merchant-withdraw-confirm");
+            page.Dialog += ConfirmDlg;
+            await page.ClickAsync("button");
+            await confirmTask.Task;
+            page.Dialog += ResultDlg;
+            var dialogMessage = await resultTask.Task;
+
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
@@ -156,22 +154,23 @@ namespace manaTest
             }
             return false;
 
-            void page_Dialog3_EventHandler(object sender, IDialog dialog)
+            void InputMoneyDlg(object sender, IDialog dialog)
             {
                 dialog.AcceptAsync("1.00");
-                page.Dialog -= page_Dialog3_EventHandler;
+                page.Dialog -= InputMoneyDlg;
             }
 
-            void page_Dialog2_EventHandler(object sender, IDialog dialog)
+            void ConfirmDlg(object sender, IDialog dialog)
             {
                 dialog.AcceptAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
+                page.Dialog -= ConfirmDlg;
+                confirmTask.TrySetResult(dialog);
             }
-            void page_Dialog5_EventHandler(object sender, IDialog dialog)
+
+            void ResultDlg(object sender, IDialog dialog)
             {
-                dialogMessage = dialog.Message;
-                dialog.DismissAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
+                resultTask.TrySetResult(dialog.Message);
+                page.Dialog -= ResultDlg;
             }
         }
 
