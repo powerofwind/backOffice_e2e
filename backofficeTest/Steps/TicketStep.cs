@@ -174,6 +174,7 @@ namespace backofficeTest.Steps
             await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page.ClickAsync("ion-card:last-child");
+            await page.WaitForSelectorAsync("h1:has-text(\"Operator\")");
 
             const string sentConsentApi = "https://thman-test.onmana.space/api/User/userinfo/consent";
             var sentConsentResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text= ขอ User  >> span"), sentConsentApi);
@@ -183,7 +184,9 @@ namespace backofficeTest.Steps
             {
                 return false;
             }
+            await page.WaitForTimeoutAsync(10000);
             return true;
+
         }
 
         public async Task<bool> SentConsentInfo2Manager()
@@ -194,6 +197,7 @@ namespace backofficeTest.Steps
             await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page.ClickAsync("ion-card:last-child");
+            await page.WaitForSelectorAsync("h1:has-text(\"Operator\")");
 
             const string sentConsentApi = "https://thman-test.onmana.space/api/User/userinfo/consent";
             var sentConsentResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text= ขอ Manager  >> span"), sentConsentApi);
@@ -203,6 +207,7 @@ namespace backofficeTest.Steps
             {
                 return false;
             }
+            await page.WaitForTimeoutAsync(10000);
             return true;
         }
 
@@ -252,6 +257,8 @@ namespace backofficeTest.Steps
             {
                 return false;
             }
+
+            await page.WaitForTimeoutAsync(10000);
             return true;
         }
     }

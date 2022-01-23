@@ -49,13 +49,13 @@ namespace mana_XUnit
         }
 
       
-        [Fact(DisplayName = "ส่งคำขอ KYC basic ได้")]
-        public async Task SendRequestKYCBasic()
-        {
-            var sut = new SetUpProject();
-            var res = await sut.SendRequestKYCBasic();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "ส่งคำขอ KYC basic ได้")]
+        //public async Task SendRequestKYCBasic()
+        //{
+        //    var sut = new SetUpProject();
+        //    var res = await sut.SendRequestKYCBasic();
+        //    res.Should().Be(true);
+        //}
       
 
      

@@ -67,6 +67,7 @@ namespace backofficeTest.Steps
             {
                 return (false, ticketId, page);
             }
+            await page.WaitForTimeoutAsync(10000);
             return (true, ticketId, page);
         }
 

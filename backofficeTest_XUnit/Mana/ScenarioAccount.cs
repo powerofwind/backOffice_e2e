@@ -25,8 +25,6 @@ namespace mana_XUnit
             res.Should().Be(true);
         }
 
-
-
         [Fact(DisplayName = "สร้างการผูกบัญชีธนาคารได้")]
         public async Task AddBankingAccount()
         {

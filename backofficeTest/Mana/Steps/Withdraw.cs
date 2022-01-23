@@ -155,7 +155,7 @@ namespace manaTest
             {
                 dialogMessage = dialog.Message;
                 dialog.DismissAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
+                page.Dialog -= page_Dialog5_EventHandler;
             }
         }
 

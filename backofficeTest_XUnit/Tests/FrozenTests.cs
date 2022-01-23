@@ -45,73 +45,73 @@ namespace backofficeTest_XUnit.Tests
             await result.page.CloseAsync();
         }
 
-        [Fact(DisplayName = "(Frozen) สามารถกดรับงานได้สำเร็จ")]
-        [TestPriority(300)]
-        public async Task TicketCanBeTaken2()
-        {
-            var sut = new FrozenStep();
-            var result = await sut.TakeLastestTicket();
+        //[Fact(DisplayName = "(Frozen) สามารถกดรับงานได้สำเร็จ")]
+        //[TestPriority(300)]
+        //public async Task TicketCanBeTaken2()
+        //{
+        //    var sut = new FrozenStep();
+        //    var result = await sut.TakeLastestTicket();
 
-            var page = result.page;
-            await page.GotoAsync(Pages.Frozen);
-            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Frozen/list/Mine?search=&page=-1";
-            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
-            var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
-            await page.WaitForSelectorAsync(targetTicketSelector);
-            await page.CloseAsync();
-        }
+        //    var page = result.page;
+        //    await page.GotoAsync(Pages.Frozen);
+        //    const string GetMineTicketApi = "https://thman-test.onmana.space/api/Frozen/list/Mine?search=&page=-1";
+        //    await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
+        //    var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
+        //    await page.WaitForSelectorAsync(targetTicketSelector);
+        //    await page.CloseAsync();
+        //}
 
-        [Fact(DisplayName = "(Frozen) ส่งคำขอยกเลิกการระงับบัญชี User ได้")]
-        [TestPriority(400)]
-        public async Task SentConsent4UnFreezeTicket()
-        {
-            var sut = new FrozenStep();
-            var result = await sut.UnFreezeTicket();
+        //[Fact(DisplayName = "(Frozen) ส่งคำขอยกเลิกการระงับบัญชี User ได้")]
+        //[TestPriority(400)]
+        //public async Task SentConsent4UnFreezeTicket()
+        //{
+        //    var sut = new FrozenStep();
+        //    var result = await sut.UnFreezeTicket();
 
-            result.isUnFreeze.Should().BeTrue();
-            var page = result.page;
-            await page.WaitForSelectorAsync("ion-card");
-            var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
-            var qry = await page.QuerySelectorAllAsync(targetTicketSelector);
-            qry.Count.Should().Be(0);
-            await result.page.CloseAsync();
-        }
+        //    result.isUnFreeze.Should().BeTrue();
+        //    var page = result.page;
+        //    await page.WaitForSelectorAsync("ion-card");
+        //    var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
+        //    var qry = await page.QuerySelectorAllAsync(targetTicketSelector);
+        //    qry.Count.Should().Be(0);
+        //    await result.page.CloseAsync();
+        //}
 
-        //TODO: MANA APP user DENY CONSENT
+        ////TODO: MANA APP user DENY CONSENT
 
-        [Fact(DisplayName = "(Frozen) ทำการ Reopen บัญชีที่ถูกระงับที่สถานะยังไม่ผ่านได้")]
-        [TestPriority(500)]
-        public async Task ReOpenTicket()
-        {
-            var sut = new FrozenStep();
-            var result = await sut.ReOpenTicket();
+        //[Fact(DisplayName = "(Frozen) ทำการ Reopen บัญชีที่ถูกระงับที่สถานะยังไม่ผ่านได้")]
+        //[TestPriority(500)]
+        //public async Task ReOpenTicket()
+        //{
+        //    var sut = new FrozenStep();
+        //    var result = await sut.ReOpenTicket();
 
-            var page = result.page;
-            await page.GotoAsync(Pages.Frozen);
-            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Frozen/list/Mine?search=&page=-1";
-            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
-            var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
-            await page.WaitForSelectorAsync(targetTicketSelector);
-            await page.CloseAsync();
-        }
+        //    var page = result.page;
+        //    await page.GotoAsync(Pages.Frozen);
+        //    const string GetMineTicketApi = "https://thman-test.onmana.space/api/Frozen/list/Mine?search=&page=-1";
+        //    await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
+        //    var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
+        //    await page.WaitForSelectorAsync(targetTicketSelector);
+        //    await page.CloseAsync();
+        //}
 
-        [Fact(DisplayName = "(Frozen) ส่งคำขอยกเลิกการระงับบัญชี User ได้")]
-        [TestPriority(600)]
-        public async Task SentConsent4UnFreezeTicket2()
-        {
-            var sut = new FrozenStep();
-            var result = await sut.UnFreezeTicket();
+        //[Fact(DisplayName = "(Frozen) ส่งคำขอยกเลิกการระงับบัญชี User ได้")]
+        //[TestPriority(600)]
+        //public async Task SentConsent4UnFreezeTicket2()
+        //{
+        //    var sut = new FrozenStep();
+        //    var result = await sut.UnFreezeTicket();
 
-            result.isUnFreeze.Should().BeTrue();
-            var page = result.page;
-            await page.WaitForSelectorAsync("ion-card");
-            var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
-            var qry = await page.QuerySelectorAllAsync(targetTicketSelector);
-            qry.Count.Should().Be(0);
-            await result.page.CloseAsync();
-        }
+        //    result.isUnFreeze.Should().BeTrue();
+        //    var page = result.page;
+        //    await page.WaitForSelectorAsync("ion-card");
+        //    var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
+        //    var qry = await page.QuerySelectorAllAsync(targetTicketSelector);
+        //    qry.Count.Should().Be(0);
+        //    await result.page.CloseAsync();
+        //}
 
-        //TODO: MANA APP user APPROVE CONSENT
+        ////TODO: MANA APP user APPROVE CONSENT
 
         [Fact(DisplayName = "(Frozen) ขอ Consent ข้อมูลผู้ใช้ไปยัง User ได้")]
         [TestPriority(900)]

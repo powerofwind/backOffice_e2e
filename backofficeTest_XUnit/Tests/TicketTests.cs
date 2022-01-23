@@ -134,27 +134,27 @@ namespace backofficeTest_XUnit.Tests
         //    content.Should().NotContain(desc);
         //}
 
-        [Fact(DisplayName = "(Ticket) สามารถสร้าง Ticket ที่ยังไม่มีคนรับเรื่องได้")]
-        [TestPriority(700)]
-        public async Task InputAllValidThenCanCreateNewTicket2()
-        {
-            var sut = new TicketStep();
-            var desc = Guid.NewGuid().ToString();
-            var result = await sut.CreateNewTicket("0914185400", "mana003kku@gmail.com", desc, "1234567890", "expected@gmail.com");
+        //[Fact(DisplayName = "(Ticket) สามารถสร้าง Ticket ที่ยังไม่มีคนรับเรื่องได้")]
+        //[TestPriority(700)]
+        //public async Task InputAllValidThenCanCreateNewTicket2()
+        //{
+        //    var sut = new TicketStep();
+        //    var desc = Guid.NewGuid().ToString();
+        //    var result = await sut.CreateNewTicket("0914185400", "mana003kku@gmail.com", desc, "1234567890", "expected@gmail.com");
 
-            result.isSuccess.Should().BeTrue();
-            var page = result.page;
-            await page.GotoAsync(Pages.Ticket);
-            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Mine?search=&page=-1";
-            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
-            var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
-            await page.WaitForSelectorAsync(targetTicketSelector);
+        //    result.isSuccess.Should().BeTrue();
+        //    var page = result.page;
+        //    await page.GotoAsync(Pages.Ticket);
+        //    const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Mine?search=&page=-1";
+        //    await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
+        //    var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
+        //    await page.WaitForSelectorAsync(targetTicketSelector);
 
-            var ticketDetailApi = $"https://thman-test.onmana.space/api/Ticket/{result.ticketId}?page=-1";
-            await page.RunAndWaitForResponseAsync(() => page.ClickAsync($"ion-card:has-text(\"{result.cardOwnerName}\")"), ticketDetailApi);
-            await page.WaitForSelectorAsync($"text={desc}");
-            await result.page.CloseAsync();
-        }
+        //    var ticketDetailApi = $"https://thman-test.onmana.space/api/Ticket/{result.ticketId}?page=-1";
+        //    await page.RunAndWaitForResponseAsync(() => page.ClickAsync($"ion-card:has-text(\"{result.cardOwnerName}\")"), ticketDetailApi);
+        //    await page.WaitForSelectorAsync($"text={desc}");
+        //    await result.page.CloseAsync();
+        //}
 
         //[Fact(DisplayName = "(Ticket) สามารถกดย้ายงานกลับได้")]
         //[TestPriority(800)]
@@ -171,14 +171,14 @@ namespace backofficeTest_XUnit.Tests
         //    await result.page.CloseAsync();
         //}
 
-        [Fact(DisplayName = "(Ticket) ขอ Consent ข้อมูลธุรกรรมไปยัง User ได้")]
-        [TestPriority(900)]
-        public async Task SentConsentInfo2User()
-        {
-            var sut = new TicketStep();
-            var result = await sut.SentConsentInfo2User();
-            result.Should().BeTrue();
-        }
+        //[Fact(DisplayName = "(Ticket) ขอ Consent ข้อมูลธุรกรรมไปยัง User ได้")]
+        //[TestPriority(900)]
+        //public async Task SentConsentInfo2User()
+        //{
+        //    var sut = new TicketStep();
+        //    var result = await sut.SentConsentInfo2User();
+        //    result.Should().BeTrue();
+        //}
 
         //TODO: MANA APP user DENY CONSENT
         //TODO: MANA APP user APPROVE CONSENT
@@ -195,14 +195,14 @@ namespace backofficeTest_XUnit.Tests
         //TODO: MANA APP manager DENY CONSENT
         //TODO: MANA APP manager APPROVE CONSENT
 
-        [Fact(DisplayName = "(Ticket) ส่งคำขอการระงับบัญชี User ได้")]
-        [TestPriority(1100)]
-        public async Task SentConsent4FreezeTicket()
-        {
-            var sut = new TicketStep();
-            var result = await sut.FreezeTicket();
-            result.Should().BeTrue();
-        }
+        //[Fact(DisplayName = "(Ticket) ส่งคำขอการระงับบัญชี User ได้")]
+        //[TestPriority(1100)]
+        //public async Task SentConsent4FreezeTicket()
+        //{
+        //    var sut = new TicketStep();
+        //    var result = await sut.FreezeTicket();
+        //    result.Should().BeTrue();
+        //}
 
         //TODO: MANA APP manager DENY CONSENT
         //TODO: MANA APP manager APPROVE CONSENT

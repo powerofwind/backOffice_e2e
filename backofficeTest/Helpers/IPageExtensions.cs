@@ -56,7 +56,7 @@ namespace backofficeTest.Helpers
             {
                 var loginPage = await targetPage;
                 await loginPage.GotoAsync("https://localhost:44364");
-                await loginPage.WaitForTimeoutAsync(15000);
+                await loginPage.WaitForTimeoutAsync(1000);
                 //const string LoginButtonSelector = "text=Login";
                 //await loginPage.ClickAsync(LoginButtonSelector);
 

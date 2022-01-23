@@ -20,17 +20,36 @@ namespace backofficeTest.Helpers
             if (null == contextTask)
             {
                 contextTask = new TaskCompletionSource<IBrowserContext>();
-                var browser = await playwright.Chromium
-                    .LaunchAsync(new BrowserTypeLaunchOptions
-                    {
-                        Headless = false,
-                        SlowMo = slomotion,
-                    });
-                var contextOptions = new BrowserNewContextOptions
+                IBrowserContext browserContext = null;
+                try
                 {
-                    StorageStatePath = StorageStatePath
-                };
-                var browserContext = await browser.NewContextAsync(contextOptions);
+                    var browser = await playwright.Chromium
+                                .LaunchAsync(new BrowserTypeLaunchOptions
+                                {
+                                    Headless = false,
+                                    SlowMo = slomotion,
+                                });
+                    var contextOptions = new BrowserNewContextOptions
+                    {
+                        StorageStatePath = StorageStatePath
+                    };
+                    browserContext = await browser.NewContextAsync(contextOptions);
+                }
+                catch (System.Exception)
+                {
+                    browserContext = await playwright.Chromium
+                        .LaunchPersistentContextAsync(nameof(PageFactory), new BrowserTypeLaunchPersistentContextOptions
+                        {
+                            Headless = false,
+                            SlowMo = slomotion,
+                        });
+                    var firstPage = await browserContext.NewPageAsync();
+                    var contextStateOptions = new BrowserContextStorageStateOptions
+                    {
+                        Path = PageFactory.StorageStatePath,
+                    };
+                    await firstPage.Context.StorageStateAsync(contextStateOptions);
+                }
                 contextTask.TrySetResult(browserContext);
             }
 
