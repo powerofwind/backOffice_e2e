@@ -366,67 +366,67 @@ namespace backofficeTest_XUnit
         //    res.Should().Be(true);
         //}
 
-        //[Fact(DisplayName = "(User(PA)) สามารถกดรับงานได้สำเร็จ")]
-        //[TestPriority(2900)]
-        //public async Task TicketCanBeTakenInUserPA()
-        //{
-        //    var sut = new User_PA_Step();
-        //    var result = await sut.TakeLastestTicket();
+        [Fact(DisplayName = "(User(PA)) สามารถกดรับงานได้สำเร็จ")]
+        [TestPriority(2900)]
+        public async Task TicketCanBeTakenInUserPA()
+        {
+            var sut = new User_PA_Step();
+            var result = await sut.TakeLastestTicket();
 
-        //    var page = result.page;
-        //    await page.GotoAsync(Pages.User);
-        //    const string GetMineTicketApi = "https://thman-test.onmana.space/api/Kyc/list/Mine?search=&page=-1";
-        //    await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
-        //    var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
-        //    await page.WaitForSelectorAsync(targetTicketSelector);
-        //    await page.CloseAsync();
-        //}
+            var page = result.page;
+            await page.GotoAsync(Pages.User);
+            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Kyc/list/Mine?search=&page=-1";
+            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
+            var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
+            await page.WaitForSelectorAsync(targetTicketSelector);
+            await page.CloseAsync();
+        }
 
-        //[Fact(DisplayName = "(User(PA)) สามารถกดย้ายงานกลับได้")]
-        //[TestPriority(3000)]
-        //public async Task TicketInMineCanBeRollbackInUserPA()
-        //{
-        //    var sut = new User_PA_Step();
-        //    var result = await sut.RollbackLastestTicket();
+        [Fact(DisplayName = "(User(PA)) สามารถกดย้ายงานกลับได้")]
+        [TestPriority(3000)]
+        public async Task TicketInMineCanBeRollbackInUserPA()
+        {
+            var sut = new User_PA_Step();
+            var result = await sut.RollbackLastestTicket();
 
-        //    var page = result.page;
-        //    await page.WaitForSelectorAsync("ion-card");
-        //    var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
-        //    var qry = await page.QuerySelectorAllAsync(targetTicketSelector);
-        //    qry.Count.Should().Be(0);
-        //    await result.page.CloseAsync();
-        //}
+            var page = result.page;
+            await page.WaitForSelectorAsync("ion-card");
+            var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
+            var qry = await page.QuerySelectorAllAsync(targetTicketSelector);
+            qry.Count.Should().Be(0);
+            await result.page.CloseAsync();
+        }
 
-        //[Fact(DisplayName = "(User(PA)) สามารถกดรับงานได้สำเร็จ")]
-        //[TestPriority(3100)]
-        //public async Task TicketCanBeTaken2()
-        //{
-        //    var sut = new User_PA_Step();
-        //    var result = await sut.TakeLastestTicket();
+        [Fact(DisplayName = "(User(PA)) สามารถกดรับงานได้สำเร็จ")]
+        [TestPriority(3100)]
+        public async Task TicketCanBeTaken2()
+        {
+            var sut = new User_PA_Step();
+            var result = await sut.TakeLastestTicket();
 
-        //    var page = result.page;
-        //    await page.GotoAsync(Pages.User);
-        //    const string GetMineTicketApi = "https://thman-test.onmana.space/api/Kyc/list/Mine?search=&page=-1";
-        //    await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
-        //    var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
-        //    await page.WaitForSelectorAsync(targetTicketSelector);
-        //    await page.CloseAsync();
-        //}
+            var page = result.page;
+            await page.GotoAsync(Pages.User);
+            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Kyc/list/Mine?search=&page=-1";
+            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Mine\")"), GetMineTicketApi);
+            var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
+            await page.WaitForSelectorAsync(targetTicketSelector);
+            await page.CloseAsync();
+        }
 
-        //[Fact(DisplayName = "(User(PA)) อนุมัติคำขอ KYC ได้")]
-        //[TestPriority(3200)]
-        //public async Task CloseTicketWithIncompleteStatus()
-        //{
-        //    var sut = new User_PA_Step();
-        //    var result = await sut.ApproveUserKYC();
+        [Fact(DisplayName = "(User(PA)) อนุมัติคำขอ KYC ได้")]
+        [TestPriority(3200)]
+        public async Task CloseTicketWithIncompleteStatus()
+        {
+            var sut = new User_PA_Step();
+            var result = await sut.ApproveUserKYC();
 
-        //    var page = result.page;
-        //    const string GetMineTicketApi = "https://thman-test.onmana.space/api/Ticket/list/Done?search=&page=-1";
-        //    await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Done\")"), GetMineTicketApi);
-        //    var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
-        //    await page.WaitForSelectorAsync(targetTicketSelector);
-        //    await page.CloseAsync();
-        //}
+            var page = result.page;
+            const string GetMineTicketApi = "https://thman-test.onmana.space/api/Kyc/list/Done?search=&page=-1";
+            await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-segment-button:has-text(\"Done\")"), GetMineTicketApi);
+            var targetTicketSelector = $"ion-card > a[href*=\"{result.ticketId}\"]";
+            await page.WaitForSelectorAsync(targetTicketSelector);
+            await page.CloseAsync();
+        }
 
         //[Fact(DisplayName = "(Fraud) สร้าง fraud โดยใช้เลขบัตรประชาชนที่ผ่านการ KYC ได้")]
         //[TestPriority(3400)]

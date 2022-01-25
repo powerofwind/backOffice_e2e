@@ -138,18 +138,18 @@ namespace backofficeTest.Steps
         public async Task<(IPage page, string ticketId)> ApproveUserKYC()
         {
             var page = await PageFactory.CreatePage().DoLogin();
-            await page.GotoAsync(Pages.Ticket);
+            await page.GotoAsync(Pages.User);
 
             await page.ClickAsync("ion-segment-button:has-text(\"Mine\")");
             await page.ClickAsync("ion-card:last-child");
             var ticketId = page.Url.Split('/', StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
-            var ticketDetailApi = $"https://thman-test.onmana.space/api/Ticket/{ticketId}?page=-1";
+            var ticketDetailApi = $"https://thman-test.onmana.space/api/Kyc/{ticketId}?page=-1";
             await page.WaitForResponseAsync(ticketDetailApi);
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-            await page.ClickAsync("text=ปิดงาน >> button");
+            await page.ClickAsync("text=อนุมัติ >> button");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ดำเนินการแก้ไขเรียบร้อยแล้ว");
+            await page.FillAsync("textarea[name=\"ion-textarea-0\"]", "ข้อมูลถูกต้อง");
             await page.ClickAsync("button >> nth=-1");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             return (page, ticketId);
