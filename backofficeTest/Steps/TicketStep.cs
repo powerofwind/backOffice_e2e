@@ -17,7 +17,8 @@ namespace backofficeTest.Steps
             await page.FillAsync("input[name=\"ion-input-0\"]", manaPhoneNo);
             var validatePaIdUrl = $"https://thman-test.onmana.space/api/User/verify/{manaPhoneNo}";
             var validatePaIdResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=ตรวจสอบข้อมูล"), validatePaIdUrl);
-            if (false == validatePaIdResponse.Ok || false == validatePaIdResponse.JsonAsync().Result.Value.GetProperty("isSuccess").GetBoolean())
+
+            if (false == validatePaIdResponse.Ok || false == (await validatePaIdResponse.JsonAsync()).Value.GetProperty("isSuccess").GetBoolean())
             {
                 return (false, page, null, null);
             }

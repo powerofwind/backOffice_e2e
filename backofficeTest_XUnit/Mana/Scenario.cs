@@ -40,13 +40,13 @@ namespace mana_XUnit
 
       
 
-        [Fact(DisplayName = "แจ้งปัญหาไปยังทีม Support ได้")]
-        public async Task ReportIssue()
-        {
-            var sut = new SetUpProject();
-            var res = await sut.ReportIssue();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "แจ้งปัญหาไปยังทีม Support ได้")]
+        //public async Task ReportIssue()
+        //{
+        //    var sut = new SetUpProject();
+        //    var res = await sut.ReportIssue();
+        //    res.Should().Be(true);
+        //}
 
       
         //[Fact(DisplayName = "ส่งคำขอ KYC basic ได้")]

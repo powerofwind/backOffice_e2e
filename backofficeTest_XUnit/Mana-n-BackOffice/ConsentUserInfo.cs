@@ -36,41 +36,41 @@ namespace backofficeTest_XUnit.Mana_n_BackOffice
         //    await result.page.CloseAsync();
         //}
 
-        [Fact(DisplayName = "(Ticket) ขอ Consent ข้อมูลธุรกรรมไปยัง User ได้")]
-        [TestPriority(200)]
-        public async Task SentConsentInfo2User()
-        {
-            var sut = new TicketStep();
-            var result = await sut.SentConsentInfo2User();
-            result.Should().BeTrue();
-        }
+        //[Fact(DisplayName = "(Ticket) ขอ Consent ข้อมูลธุรกรรมไปยัง User ได้")]
+        //[TestPriority(200)]
+        //public async Task SentConsentInfo2User()
+        //{
+        //    var sut = new TicketStep();
+        //    var result = await sut.SentConsentInfo2User();
+        //    result.Should().BeTrue();
+        //}
 
-        [Fact(DisplayName = "User ปฏิเสธการเข้าถึงข้อมูลได้")]
-        [TestPriority(300)]
-        public async Task UserRejectInfo()
-        {
-            var sut = new Consent();
-            var res = await sut.UserRejectInfo();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "User ปฏิเสธการเข้าถึงข้อมูลได้")]
+        //[TestPriority(300)]
+        //public async Task UserRejectInfo()
+        //{
+        //    var sut = new Consent();
+        //    var res = await sut.UserRejectInfo();
+        //    res.Should().Be(true);
+        //}
 
-        [Fact(DisplayName = "(Ticket) ขอ Consent ข้อมูลธุรกรรมไปยัง User ได้2")]
-        [TestPriority(400)]
-        public async Task SentConsentInfo2User2()
-        {
-            var sut = new TicketStep();
-            var result = await sut.SentConsentInfo2User();
-            result.Should().BeTrue();
-        }
+        //[Fact(DisplayName = "(Ticket) ขอ Consent ข้อมูลธุรกรรมไปยัง User ได้2")]
+        //[TestPriority(400)]
+        //public async Task SentConsentInfo2User2()
+        //{
+        //    var sut = new TicketStep();
+        //    var result = await sut.SentConsentInfo2User();
+        //    result.Should().BeTrue();
+        //}
 
-        [Fact(DisplayName = "User อนุมัติการเข้าถึงข้อมูลได้")]
-        [TestPriority(500)]
-        public async Task UserApproveInfo()
-        {
-            var sut = new Consent();
-            var res = await sut.UserApproveInfo();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "User อนุมัติการเข้าถึงข้อมูลได้")]
+        //[TestPriority(500)]
+        //public async Task UserApproveInfo()
+        //{
+        //    var sut = new Consent();
+        //    var res = await sut.UserApproveInfo();
+        //    res.Should().Be(true);
+        //}
 
         //[Fact(DisplayName = "(Ticket) ขอ Consent ข้อมูลธุรกรรมไปยัง Manager ได้")]
         //[TestPriority(600)]

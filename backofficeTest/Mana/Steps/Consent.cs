@@ -83,25 +83,19 @@ namespace manaTest
         // User อนุมัติการเข้าถึงข้อมูลได้
         public async Task<bool> UserApproveInfo()
         {
-            //var isInitSuccess = await ManaMcontent("https://localhost:44364/dev/visit?url=test-home-feed");
-
-            //if (!isInitSuccess)
-            //{
-            //    return false;
-            //}
-
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
 
             await page.GotoAsync("http://localhost:8100/#/home-feed");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            var dialogMessage = string.Empty;
             await page.ClickAsync("ion-row:has-text(\"mana official 3 daขออนุญาติเข้าถึงข้อมูลผู้ใช้งาน\")");
             await page.GotoAsync("http://localhost:8100/#/consent-userinfo-by-user");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page.ClickAsync("label:has-text(\"อนุญาต\")");
-           
-            page.Dialog += alertDlg_EventHandler;
+
+            var resultTask = new TaskCompletionSource<string>();
+
+            page.Dialog += ResultDlg;
             const string ConfirmConsentApi = "https://localhost:44364/mcontent/Submit/";
             var ConfirmConsentResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!ConfirmConsentResponse.Ok)
@@ -109,53 +103,39 @@ namespace manaTest
                 return false;
             }
 
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            await page.WaitForTimeoutAsync(2000);
-            //page.Dialog += page_Dialog5_EventHandler;
-            //await page.WaitForTimeoutAsync(6000);
-
+            var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
                 return true;
+                await page.CloseAsync();
             }
             return false;
 
-            void alertDlg_EventHandler(object sender, IDialog dialog)
+            void ResultDlg(object sender, IDialog dialog)
             {
-                dialogMessage = dialog.Message;
+                resultTask.TrySetResult(dialog.Message);
                 dialog.AcceptAsync();
-                page.Dialog -= alertDlg_EventHandler;
+                page.Dialog -= ResultDlg;
             }
-            //void page_Dialog5_EventHandler(object sender, IDialog dialog)
-            //{
-            //    dialogMessage = dialog.Message;
-            //    dialog.DismissAsync();
-            //    page.Dialog -= page_Dialog2_EventHandler;
-            //}
         }
 
         // User ปฏิเสธการเข้าถึงข้อมูลได้
         public async Task<bool> UserRejectInfo()
         {
-            //var isInitSuccess = await ManaMcontent("https://localhost:44364/dev/visit?url=test-home-feed");
-
-            //if (!isInitSuccess)
-            //{
-            //    return false;
-            //}
-
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
+
             await page.GotoAsync("http://localhost:8100/#/home-feed");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            var dialogMessage = string.Empty;
             await page.ClickAsync("ion-row:has-text(\"mana official 3 daขออนุญาติเข้าถึงข้อมูลผู้ใช้งาน\")");
             await page.GotoAsync("http://localhost:8100/#/consent-userinfo-by-user");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page.ClickAsync("label:has-text(\"ปฏิเสธ\")");
 
-            page.Dialog += alertDlg_EventHandler;
+            var resultTask = new TaskCompletionSource<string>();
+
+            page.Dialog += ResultDlg;
             const string ConfirmConsentApi = "https://localhost:44364/mcontent/Submit/";
             var ConfirmConsentResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!ConfirmConsentResponse.Ok)
@@ -163,43 +143,39 @@ namespace manaTest
                 return false;
             }
 
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
                 return true;
+                await page.CloseAsync();
             }
             return false;
 
-            void alertDlg_EventHandler(object sender, IDialog dialog)
+            void ResultDlg(object sender, IDialog dialog)
             {
-                dialogMessage = dialog.Message;
+                resultTask.TrySetResult(dialog.Message);
                 dialog.AcceptAsync();
-                page.Dialog -= alertDlg_EventHandler;
+                page.Dialog -= ResultDlg;
             }
         }
 
         // Manager อนุมัติการเข้าถึงข้อมูลได้
         public async Task<bool> ManagerApproveInfo()
         {
-            //var isInitSuccess = await ManaMcontent("https://localhost:44364/dev/visit?url=test-home-feed");
-
-            //if (!isInitSuccess)
-            //{
-            //    return false;
-            //}
-
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
 
             await page.GotoAsync("http://localhost:8100/#/home-feed");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            var dialogMessage = string.Empty;
             await page.ClickAsync("ion-row:has-text(\"mana official 3 daขออนุญาติเข้าถึงข้อมูลผู้ใช้งาน\")");
             await page.GotoAsync("http://localhost:8100/#/consent-userinfo-by-manager");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page.ClickAsync("label:has-text(\"อนุญาต\")");
 
+            var resultTask = new TaskCompletionSource<string>();
+
+            page.Dialog += ResultDlg;
             const string ConfirmConsentApi = "https://localhost:44364/mcontent/Submit/";
             var AmountSubmitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!AmountSubmitResponse.Ok)
@@ -207,54 +183,40 @@ namespace manaTest
                 return false;
             }
 
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            page.Dialog += page_Dialog2_EventHandler;
-            await page.WaitForTimeoutAsync(2000);
-            page.Dialog += page_Dialog5_EventHandler;
-            await page.WaitForTimeoutAsync(6000);
-
+            var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
                 return true;
+                await page.CloseAsync();
             }
             return false;
 
-            void page_Dialog2_EventHandler(object sender, IDialog dialog)
+            void ResultDlg(object sender, IDialog dialog)
             {
-                dialogMessage = dialog.Message;
+                resultTask.TrySetResult(dialog.Message);
                 dialog.AcceptAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
+                page.Dialog -= ResultDlg;
             }
-            void page_Dialog5_EventHandler(object sender, IDialog dialog)
-            {
-                dialogMessage = dialog.Message;
-                dialog.DismissAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
-            }       
         }
 
         // Manager ปฏิเสธการเข้าถึงข้อมูลได้
         public async Task<bool> ManagerRejectInfo()
         {
-            //var isInitSuccess = await ManaMcontent("https://localhost:44364/dev/visit?url=test-home-feed");
-
-            //if (!isInitSuccess)
-            //{
-            //    return false;
-            //}
 
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
 
             await page.GotoAsync("http://localhost:8100/#/home-feed");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            var dialogMessage = string.Empty;
             await page.ClickAsync("ion-row:has-text(\"mana official 3 daขออนุญาติเข้าถึงข้อมูลผู้ใช้งาน\")");
             await page.GotoAsync("http://localhost:8100/#/consent-userinfo-by-manager");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page.ClickAsync("label:has-text(\"ปฏิเสธ\")");
 
+            var resultTask = new TaskCompletionSource<string>();
+
+            page.Dialog += ResultDlg;
             const string ConfirmConsentApi = "https://localhost:44364/mcontent/Submit/";
             var AmountSubmitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!AmountSubmitResponse.Ok)
@@ -262,53 +224,38 @@ namespace manaTest
                 return false;
             }
 
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            page.Dialog += page_Dialog2_EventHandler;
-            await page.WaitForTimeoutAsync(2000);
-            page.Dialog += page_Dialog5_EventHandler;
-            await page.WaitForTimeoutAsync(6000);
-
+            var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
                 return true;
+                await page.CloseAsync();
             }
             return false;
 
-            void page_Dialog2_EventHandler(object sender, IDialog dialog)
+            void ResultDlg(object sender, IDialog dialog)
             {
-                dialogMessage = dialog.Message;
+                resultTask.TrySetResult(dialog.Message);
                 dialog.AcceptAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
+                page.Dialog -= ResultDlg;
             }
-            void page_Dialog5_EventHandler(object sender, IDialog dialog)
-            {
-                dialogMessage = dialog.Message;
-                dialog.DismissAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
-            }       
         }
 
         // Manager อนุมัติการระงับบัญชีได้
         public async Task<bool> ManagerApproveSuspendAccount()
         {
-            //var isInitSuccess = await ManaMcontent("https://localhost:44364/dev/visit?url=test-home-feed");
-
-            //if (!isInitSuccess)
-            //{
-            //    return false;
-            //}
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
-
             await page.GotoAsync("http://localhost:8100/#/home-feed");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            var dialogMessage = string.Empty;
             await page.ClickAsync("ion-row:has-text(\"mana official 3 daขอระงับบัญชีของผู้ใช้งาน\")");
             await page.GotoAsync("http://localhost:8100/#/consent-freezing-by-manager");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page.ClickAsync("label:has-text(\"อนุญาต\")");
 
+            var resultTask = new TaskCompletionSource<string>();
+
+            page.Dialog += ResultDlg;
             const string ConfirmConsentApi = "https://localhost:44364/mcontent/Submit/";
             var AmountSubmitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!AmountSubmitResponse.Ok)
@@ -316,54 +263,39 @@ namespace manaTest
                 return false;
             }
 
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            page.Dialog += page_Dialog2_EventHandler;
-            await page.WaitForTimeoutAsync(2000);
-            page.Dialog += page_Dialog5_EventHandler;
-            await page.WaitForTimeoutAsync(6000);
-
+            var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
                 return true;
+                await page.CloseAsync();
             }
             return false;
 
-            void page_Dialog2_EventHandler(object sender, IDialog dialog)
+            void ResultDlg(object sender, IDialog dialog)
             {
-                dialogMessage = dialog.Message;
+                resultTask.TrySetResult(dialog.Message);
                 dialog.AcceptAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
+                page.Dialog -= ResultDlg;
             }
-            void page_Dialog5_EventHandler(object sender, IDialog dialog)
-            {
-                dialogMessage = dialog.Message;
-                dialog.DismissAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
-            }        
         }
 
         // Manager ปฏิเสธการระงับบัญชีได้
         public async Task<bool> ManagerRejectSuspendAccount()
         {
-
-            //var isInitSuccess = await ManaMcontent("https://localhost:44364/dev/visit?url=test-home-feed");
-
-            //if (!isInitSuccess)
-            //{
-            //    return false;
-            //}
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
 
             await page.GotoAsync("http://localhost:8100/#/home-feed");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            var dialogMessage = string.Empty;
             await page.ClickAsync("ion-row:has-text(\"mana official 3 daขอระงับบัญชีของผู้ใช้งาน\")");
             await page.GotoAsync("http://localhost:8100/#/consent-freezing-by-manager");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page.ClickAsync("label:has-text(\"ปฏิเสธ\")");
 
+            var resultTask = new TaskCompletionSource<string>();
+
+            page.Dialog += ResultDlg;
             const string ConfirmConsentApi = "https://localhost:44364/mcontent/Submit/";
             var AmountSubmitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!AmountSubmitResponse.Ok)
@@ -371,54 +303,39 @@ namespace manaTest
                 return false;
             }
 
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            page.Dialog += page_Dialog2_EventHandler;
-            await page.WaitForTimeoutAsync(2000);
-            page.Dialog += page_Dialog5_EventHandler;
-            await page.WaitForTimeoutAsync(6000);
-
+            var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
                 return true;
+                await page.CloseAsync();
             }
             return false;
 
-            void page_Dialog2_EventHandler(object sender, IDialog dialog)
+            void ResultDlg(object sender, IDialog dialog)
             {
-                dialogMessage = dialog.Message;
+                resultTask.TrySetResult(dialog.Message);
                 dialog.AcceptAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
+                page.Dialog -= ResultDlg;
             }
-            void page_Dialog5_EventHandler(object sender, IDialog dialog)
-            {
-                dialogMessage = dialog.Message;
-                dialog.DismissAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
-            }              
         }
 
         // Manager อนุมัติการยกเลิกการระงับบัญชีได้
         public async Task<bool> ManagerApproveCancelSuspendAccount()
         {
-            //var isInitSuccess = await ManaMcontent("https://localhost:44364/dev/visit?url=test-home-feed");
-
-            //if (!isInitSuccess)
-            //{
-            //    return false;
-            //}
-
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
 
             await page.GotoAsync("http://localhost:8100/#/home-feed");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            var dialogMessage = string.Empty;
             await page.ClickAsync("ion-row:has-text(\"mana official 3 daขอยกเลิกระงับบัญชีของผู้ใช้งาน\")");
             await page.GotoAsync("http://localhost:8100/#/consent-unfreezing-by-manager");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page.ClickAsync("label:has-text(\"อนุญาต\")");
 
+            var resultTask = new TaskCompletionSource<string>();
+
+            page.Dialog += ResultDlg;
             const string ConfirmConsentApi = "https://localhost:44364/mcontent/Submit/";
             var AmountSubmitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!AmountSubmitResponse.Ok)
@@ -426,54 +343,39 @@ namespace manaTest
                 return false;
             }
 
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            page.Dialog += page_Dialog2_EventHandler;
-            await page.WaitForTimeoutAsync(2000);
-            page.Dialog += page_Dialog5_EventHandler;
-            await page.WaitForTimeoutAsync(6000);
-
+            var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
                 return true;
+                await page.CloseAsync();
             }
             return false;
 
-            void page_Dialog2_EventHandler(object sender, IDialog dialog)
+            void ResultDlg(object sender, IDialog dialog)
             {
-                dialogMessage = dialog.Message;
+                resultTask.TrySetResult(dialog.Message);
                 dialog.AcceptAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
+                page.Dialog -= ResultDlg;
             }
-            void page_Dialog5_EventHandler(object sender, IDialog dialog)
-            {
-                dialogMessage = dialog.Message;
-                dialog.DismissAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
-            }              
         }
 
         // Manager ปฏิเสธการยกเลิกการระงับบัญชีได้
         public async Task<bool> ManagerRejectCancelSuspendAccount()
         {
-            //var isInitSuccess = await ManaMcontent("https://localhost:44364/dev/visit?url=test-home-feed");
-
-            //if (!isInitSuccess)
-            //{
-            //    return false;
-            //}
-
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
 
             await page.GotoAsync("http://localhost:8100/#/home-feed");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            var dialogMessage = string.Empty;
             await page.ClickAsync("ion-row:has-text(\"mana official 3 daขอยกเลิกระงับบัญชีของผู้ใช้งาน\")");
             await page.GotoAsync("http://localhost:8100/#/consent-unfreezing-by-manager");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page.ClickAsync("label:has-text(\"ปฏิเสธ\")");
 
+            var resultTask = new TaskCompletionSource<string>();
+
+            page.Dialog += ResultDlg;
             const string ConfirmConsentApi = "https://localhost:44364/mcontent/Submit/";
             var AmountSubmitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!AmountSubmitResponse.Ok)
@@ -481,30 +383,20 @@ namespace manaTest
                 return false;
             }
 
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            page.Dialog += page_Dialog2_EventHandler;
-            await page.WaitForTimeoutAsync(2000);
-            page.Dialog += page_Dialog5_EventHandler;
-            await page.WaitForTimeoutAsync(6000);
-
+            var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
                 return true;
+                await page.CloseAsync();
             }
             return false;
 
-            void page_Dialog2_EventHandler(object sender, IDialog dialog)
+            void ResultDlg(object sender, IDialog dialog)
             {
-                dialogMessage = dialog.Message;
+                resultTask.TrySetResult(dialog.Message);
                 dialog.AcceptAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
-            }
-            void page_Dialog5_EventHandler(object sender, IDialog dialog)
-            {
-                dialogMessage = dialog.Message;
-                dialog.DismissAsync();
-                page.Dialog -= page_Dialog2_EventHandler;
+                page.Dialog -= ResultDlg;
             }
         }
     }
