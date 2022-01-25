@@ -15,17 +15,17 @@ namespace backofficeTest_XUnit
         // TODO: มี 2 กรณี
         // 1.เราเป็นคนรับงานของผู้ใช้นี้อยู่แล้ว
         // 2.มีคนอื่นรับไปแล้ว
-        //[Fact(DisplayName = "(Ticket) ไม่สามารถสร้าง Ticket ที่มีคนรับเรื่องอยู่แล้วได้")]
-        //[TestPriority(2)]
-        //public async Task CanNotCreateNewTicketWhenItAlreadyTaken()
-        //{
-        //    var sut = new TicketStep();
-        //    var desc = Guid.NewGuid().ToString();
-        //    var result = await sut.CreateNewTicket("0914185400", "mana003kku@gmail.com", desc, "1234567890", "expected@gmail.com");
-        //    result.isSuccess.Should().BeFalse();
-        //    var content = await result.page.ContentAsync();
-        //    content.Should().NotContain(desc);
-        //}
+        [Fact(DisplayName = "(Ticket) ไม่สามารถสร้าง Ticket ที่มีคนรับเรื่องอยู่แล้วได้")]
+        public async Task CanNotCreateNewTicketWhenItAlreadyTaken()
+        {
+            var sut = new TicketStep();
+            var desc = Guid.NewGuid().ToString();
+            //var result = await sut.CreateNewTicket("0910167715", "mana002kku@gmail.com", desc, "1234567890", "expected@gmail.com");
+            var result = await sut.CreateNewTicket("0632130913", "tachapong999@gmail.com", desc, "1234567890", "expected@gmail.com");
+            result.isSuccess.Should().BeFalse();
+            var isTicketExist = result.page.Url.Contains("detail");
+            isTicketExist.Should().BeTrue();
+        }
 
         [Fact(DisplayName = "(Fraud) ไม่สามารถสร้าง fraud โดยใช้เลขบัตรประชาชนที่ไม่เคยผ่านการทำ KYC ได้")]
         public async Task InputPaIdWithNoKycThenCanNotCreate()
@@ -45,13 +45,13 @@ namespace backofficeTest_XUnit
         }
 
         ///  Mana
-        [Fact(DisplayName = "แจ้งปัญหาไปยังทีม Support ได้")]
-        public async Task ReportIssue()
-        {
-            var sut = new SetUpProject();
-            var res = await sut.ReportIssue();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "แจ้งปัญหาไปยังทีม Support ได้")]
+        //public async Task ReportIssue()
+        //{
+        //    var sut = new SetUpProject();
+        //    var res = await sut.ReportIssue();
+        //    res.Should().Be(true);
+        //}
 
         [Fact(DisplayName = "สร้างร้านสำหรับ Business ได้")]
         public async Task CreateBusinessShop()

@@ -32,6 +32,13 @@ namespace backofficeTest.Steps
                 return (false, page, null, null);
             }
 
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            var isTicketAccepted = page.Url.Contains("detail");
+            if (true == isTicketAccepted)
+            {
+                return (false, page, null, null);
+            }
+
             await page.WaitForSelectorAsync("text=ต้องระบุ, ประเภทปัญหา");
             await page.ClickAsync("text=ต้องระบุ, ประเภทปัญหา");
             await page.ClickAsync("button[role=\"radio\"]:has-text(\"อื่นๆ\")");
