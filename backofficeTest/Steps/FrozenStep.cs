@@ -91,46 +91,6 @@ namespace backofficeTest.Steps
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             return (page, ticketId);
         }
-
-        public async Task<bool> SentConsentInfo2User()
-        {
-            var page = await PageFactory.CreatePage().DoLogin();
-            await page.GotoAsync(Pages.Frozen);
-
-            await page.ClickAsync("ion-segment-button:has-text(\"Done\")");
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            await page.ClickAsync("ion-card:last-child");
-
-            const string sentConsentApi = "https://thman-test.onmana.space/api/User/userinfo/consent";
-            var sentConsentResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text= ขอ User  >> span"), sentConsentApi);
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-
-            if (false == sentConsentResponse.Ok)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public async Task<bool> SentConsentInfo2Manager()
-        {
-            var page = await PageFactory.CreatePage().DoLogin();
-            await page.GotoAsync(Pages.Frozen);
-
-            await page.ClickAsync("ion-segment-button:has-text(\"Done\")");
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            await page.ClickAsync("ion-card:last-child");
-
-            const string sentConsentApi = "https://thman-test.onmana.space/api/User/userinfo/consent";
-            var sentConsentResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text= ขอ Manager  >> span"), sentConsentApi);
-            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-
-            if (false == sentConsentResponse.Ok)
-            {
-                return false;
-            }
-            return true;
-        }
     }
 }
 

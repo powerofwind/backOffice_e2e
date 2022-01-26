@@ -140,6 +140,7 @@ namespace manaTest
             await page.ClickAsync("button");
             ////// วันเกิด
             ///            await page.ClickAsync("text=22");
+            await page.ClickAsync("text=26");
             await page.ClickAsync("text=25");
             await page.ClickAsync("text=23");
             await page.ClickAsync("text=22");
@@ -218,10 +219,12 @@ namespace manaTest
             await page2.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page2.ClickAsync("input[name=\"ion-input-1\"]");
             await page2.FillAsync("input[name=\"ion-input-1\"]", "0910167715");
+            await page2.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page2.ClickAsync("button");
             await page.ClickAsync("text=OK >> button");
             await page2.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page2.ClickAsync("button");
+
 
             const string CreateKYCApi = "https://localhost:44364/mcontent/Submit/";
             var CreateKYCApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=OK >> button"), CreateKYCApi);
@@ -238,7 +241,7 @@ namespace manaTest
             var ComfirmCreateKYCApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ComfirmCreateKYCApi);
             if (ComfirmCreateKYCApiResponse.Ok)
             {
-                await page.WaitForTimeoutAsync(10000);
+                await page.WaitForTimeoutAsync(20000);
                 return (true, page);
             }
             return (false, page);
