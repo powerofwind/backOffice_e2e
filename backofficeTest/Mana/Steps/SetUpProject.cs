@@ -119,7 +119,7 @@ namespace manaTest
 
 
         // ส่งคำขอ KYC basic
-        public async Task<bool> SendRequestKYCBasic()
+        public async Task<(bool isSuccess, IPage page)> SendRequestKYCBasic()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=https://s.manal.ink/kyc/basic/visit/nkycbsc-180056522489857");
@@ -227,7 +227,7 @@ namespace manaTest
             var CreateKYCApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=OK >> button"), CreateKYCApi);
             if (!CreateKYCApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             // app mana เข้าหน้านี้ยังไมได้
@@ -239,9 +239,9 @@ namespace manaTest
             if (ComfirmCreateKYCApiResponse.Ok)
             {
                 await page.WaitForTimeoutAsync(10000);
-                return true;
+                return (true, page);
             }
-            return false;
+            return (false, page);
         }
     }
 }

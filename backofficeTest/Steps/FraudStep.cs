@@ -138,7 +138,7 @@ namespace backofficeTest.Steps
             return true;
         }
 
-        public async Task<bool> LogOutTicket()
+        public async Task<(bool isSuccess, IPage page)> LogOutTicket()
         {
             var page = await PageFactory.CreatePage().DoLogin();
             await page.GotoAsync(Pages.Fraud);
@@ -158,9 +158,9 @@ namespace backofficeTest.Steps
 
             if (false == LogOutTicketResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
-            return true;
+            return (true, page);
         }
     }
 }

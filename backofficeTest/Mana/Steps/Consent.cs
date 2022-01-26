@@ -315,7 +315,7 @@ namespace manaTest
         }
 
         // Manager อนุมัติการยกเลิกการระงับบัญชีได้
-        public async Task<bool> ManagerApproveCancelSuspendAccount()
+        public async Task<(bool isSuccess, IPage page)> ManagerApproveCancelSuspendAccount()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
@@ -334,16 +334,16 @@ namespace manaTest
             var AmountSubmitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!AmountSubmitResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
-                return true;
+                return (true, page);
             }
-            return false;
+            return (false, page);
 
             void ResultDlg(object sender, IDialog dialog)
             {
@@ -354,7 +354,7 @@ namespace manaTest
         }
 
         // Manager ปฏิเสธการยกเลิกการระงับบัญชีได้
-        public async Task<bool> ManagerRejectCancelSuspendAccount()
+        public async Task<(bool isSuccess, IPage page)> ManagerRejectCancelSuspendAccount()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
@@ -373,16 +373,16 @@ namespace manaTest
             var AmountSubmitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!AmountSubmitResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
-                return true;
+                return (true, page);
             }
-            return false;
+            return (false, page);
 
             void ResultDlg(object sender, IDialog dialog)
             {
