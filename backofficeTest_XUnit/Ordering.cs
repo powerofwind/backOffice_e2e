@@ -14,8 +14,18 @@ namespace backofficeTest_XUnit
 {
     public class Ordering : TestBase
     {
-        [Fact(DisplayName = "(Ticket) สามารถสร้าง Ticket ที่ยังไม่มีคนรับเรื่องได้")]
+        [Fact(DisplayName = "(Ticket) เบอร์โทรที่ไม่ได้ลงทะเบียนจะต้องไม่สามารถสร้าง Ticket ได้")]
         [TestPriority(100)]
+        public async Task InputUnknowPhoneNoThenCanNotCreateNewTicket()
+        {
+            var sut = new TicketStep();
+            var result = await sut.CreateNewTicket("0000000000", "invalid@email.com", null, null, null);
+            result.isSuccess.Should().BeFalse();
+            await result.page.CloseAsync();
+        }
+
+        [Fact(DisplayName = "(Ticket) สามารถสร้าง Ticket ที่ยังไม่มีคนรับเรื่องได้")]
+        [TestPriority(150)]
         public async Task InputAllValidThenCanCreateNewTicket()
         {
             var sut = new TicketStep();
@@ -50,6 +60,18 @@ namespace backofficeTest_XUnit
             var qry = await page.QuerySelectorAllAsync(targetTicketSelector);
             qry.Count.Should().Be(0);
             await result.page.CloseAsync();
+        }
+
+        [Fact(DisplayName = "(Ticket) ไม่สามารถสร้าง Ticket ที่มีคนรับเรื่องอยู่แล้วได้")]
+        [TestPriority(250)]
+        public async Task CanNotCreateNewTicketWhenItAlreadyTaken()
+        {
+            var sut = new TicketStep();
+            var desc = Guid.NewGuid().ToString();
+            var result = await sut.CreateNewTicket("0910167715", "mana002kku@gmail.com", desc, "1234567890", "expected@gmail.com");
+            result.isSuccess.Should().BeFalse();
+            var isTicketExist = result.page.Url.Contains("detail");
+            isTicketExist.Should().BeTrue();
         }
 
         [Fact(DisplayName = "(Ticket) สามารถกดรับงานที่ยังไม่มีคนรับได้")]
@@ -563,6 +585,7 @@ namespace backofficeTest_XUnit
             var sut = new FraudStep();
             var result = await sut.LogOutTicket();
             result.isSuccess.Should().BeTrue();
+            await result.page.CloseAsync();
         }
 
         ////// Mana
@@ -626,6 +649,77 @@ namespace backofficeTest_XUnit
         {
             var sut = new Topup();
             var res = await sut.TopUpbanking();
+            res.Should().Be(true);
+        }
+        [Fact(DisplayName = "สร้างร้านสำหรับ Business ได้")]
+        [TestPriority(4400)]
+        public async Task CreateBusinessShop()
+        {
+            var sut = new BusinessShop();
+            var res = await sut.CreateBusinessShop();
+            res.Should().Be(true);
+        }
+
+        [Fact(DisplayName = "สร้าง QR ร้าน Business ได้")]
+        [TestPriority(4500)]
+        public async Task CreatQRBusiness()
+        {
+            var sut = new BusinessShop();
+            var res = await sut.CreatQRBusiness();
+            res.Should().Be(true);
+        }
+
+        [Fact(DisplayName = "ถอนเงินออกจากร้าน Business เข้ากระเป๋าเงิน Mana ได้")]
+        [TestPriority(4600)]
+        public async Task withdrawBusinessShop()
+        {
+            var sut = new BusinessShop();
+            var res = await sut.withdrawBusinessShop();
+            res.Should().Be(true);
+        }
+
+        [Fact(DisplayName = "สร้าง QR เพื่อเติมเงินเข้ากระเป๋าเงิน Mana ได้")]
+        [TestPriority(4700)]
+        public async Task TopUpCreateQR()
+        {
+            var sut = new Topup();
+            var res = await sut.TopUpCreateQR();
+            res.Should().Be(true);
+        }
+
+        [Fact(DisplayName = "ถอนเงินจากพร้อมเพย์ที่ผูกไว้ได้")]
+        [TestPriority(4800)]
+        public async Task WithdrawPPaySuccess()
+        {
+            var sut = new Withdraw();
+            var res = await sut.WithdrawPPaySuccess();
+            res.Should().Be(true);
+        }
+
+        [Fact(DisplayName = "ถอนเงินจากบัญีธนาคารที่ผูกไว้ได้")]
+        [TestPriority(4900)]
+        public async Task WithdrawBankingSuccess()
+        {
+            var sut = new Withdraw();
+            var res = await sut.WithdrawBankingSuccess();
+            res.Should().Be(true);
+        }
+
+        [Fact(DisplayName = "ถอนเงินออกจากกระเป๋าเงิน Mana ผ่านบัญชีพร้อมเพย์ที่ผูกไว้ไม่ได้ เพราะเงินในบัญชีไม่พอ")]
+        [TestPriority(5000)]
+        public async Task NotWithdrawPPayMoneyNotEnough()
+        {
+            var sut = new Withdraw();
+            var res = await sut.NotWithdrawPPayMoneyNotEnough();
+            res.Should().Be(true);
+        }
+
+        [Fact(DisplayName = "ถอนเงินออกจากกระเป๋าเงิน mana ผ่านบัญชีธนาคารที่ผูกไว้ไม่ได้ เพราะเงินไม่พอ")]
+        [TestPriority(5100)]
+        public async Task NotWithdrawBankingMoneyNotEnough()
+        {
+            var sut = new Withdraw();
+            var res = await sut.NotWithdrawBankingMoneyNotEnough();
             res.Should().Be(true);
         }
     }
