@@ -174,7 +174,7 @@ namespace backofficeTest.Steps
             return (page, ticketId);
         }
 
-        public async Task<bool> SentConsentInfo2User()
+        public async Task<(bool isSuccess, IPage page)> SentConsentInfo2User()
         {
             var page = await PageFactory.CreatePage().DoLogin();
             await page.GotoAsync(Pages.Ticket);
@@ -190,14 +190,14 @@ namespace backofficeTest.Steps
 
             if (false == sentConsentResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
             await page.WaitForTimeoutAsync(10000);
-            return true;
+            return (true, page);
 
         }
 
-        public async Task<bool> SentConsentInfo2Manager()
+        public async Task<(bool isSuccess, IPage page)> SentConsentInfo2Manager()
         {
             var page = await PageFactory.CreatePage().DoLogin();
             await page.GotoAsync(Pages.Ticket);
@@ -213,10 +213,10 @@ namespace backofficeTest.Steps
 
             if (false == sentConsentResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
             await page.WaitForTimeoutAsync(10000);
-            return true;
+            return (true, page);
         }
 
         public async Task<bool> LogOutTicket()
@@ -244,7 +244,7 @@ namespace backofficeTest.Steps
             return true;
         }
 
-        public async Task<bool> FreezeTicket()
+        public async Task<(bool isSuccess, IPage page)> FreezeTicket()
         {
             var page = await PageFactory.CreatePage().DoLogin();
             await page.GotoAsync(Pages.Ticket);
@@ -263,11 +263,11 @@ namespace backofficeTest.Steps
 
             if (false == FreezeTicketResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             await page.WaitForTimeoutAsync(10000);
-            return true;
+            return (true, page);
         }
     }
 }

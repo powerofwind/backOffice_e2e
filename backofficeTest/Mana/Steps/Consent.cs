@@ -81,7 +81,7 @@ namespace manaTest
         //}
 
         // User อนุมัติการเข้าถึงข้อมูลได้
-        public async Task<bool> UserApproveInfo()
+        public async Task<(bool isSuccess, IPage page)> UserApproveInfo()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
@@ -100,17 +100,16 @@ namespace manaTest
             var ConfirmConsentResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!ConfirmConsentResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
-                return true;
-                await page.CloseAsync();
+                return (true, page);
             }
-            return false;
+            return (false, page);
 
             void ResultDlg(object sender, IDialog dialog)
             {
@@ -121,7 +120,7 @@ namespace manaTest
         }
 
         // User ปฏิเสธการเข้าถึงข้อมูลได้
-        public async Task<bool> UserRejectInfo()
+        public async Task<(bool isSuccess, IPage page)> UserRejectInfo()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
@@ -140,17 +139,16 @@ namespace manaTest
             var ConfirmConsentResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!ConfirmConsentResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
-                return true;
-                await page.CloseAsync();
+                return (true, page);
             }
-            return false;
+            return (false, page);
 
             void ResultDlg(object sender, IDialog dialog)
             {
@@ -161,7 +159,7 @@ namespace manaTest
         }
 
         // Manager อนุมัติการเข้าถึงข้อมูลได้
-        public async Task<bool> ManagerApproveInfo()
+        public async Task<(bool isSuccess, IPage page)> ManagerApproveInfo()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
@@ -180,17 +178,16 @@ namespace manaTest
             var AmountSubmitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!AmountSubmitResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
-                return true;
-                await page.CloseAsync();
+                return (true, page);
             }
-            return false;
+            return (false, page);
 
             void ResultDlg(object sender, IDialog dialog)
             {
@@ -201,7 +198,7 @@ namespace manaTest
         }
 
         // Manager ปฏิเสธการเข้าถึงข้อมูลได้
-        public async Task<bool> ManagerRejectInfo()
+        public async Task<(bool isSuccess, IPage page)> ManagerRejectInfo()
         {
 
             var page = await PageFactory.CreatePage().DoManaLogin();
@@ -221,17 +218,16 @@ namespace manaTest
             var AmountSubmitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!AmountSubmitResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
-                return true;
-                await page.CloseAsync();
+                return (true, page);
             }
-            return false;
+            return (false, page);
 
             void ResultDlg(object sender, IDialog dialog)
             {
@@ -242,7 +238,7 @@ namespace manaTest
         }
 
         // Manager อนุมัติการระงับบัญชีได้
-        public async Task<bool> ManagerApproveSuspendAccount()
+        public async Task<(bool isSuccess, IPage page)> ManagerApproveSuspendAccount()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
@@ -260,17 +256,16 @@ namespace manaTest
             var AmountSubmitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!AmountSubmitResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
-                return true;
-                await page.CloseAsync();
+                return (true, page);
             }
-            return false;
+            return (false, page);
 
             void ResultDlg(object sender, IDialog dialog)
             {
@@ -281,7 +276,7 @@ namespace manaTest
         }
 
         // Manager ปฏิเสธการระงับบัญชีได้
-        public async Task<bool> ManagerRejectSuspendAccount()
+        public async Task<(bool isSuccess, IPage page)> ManagerRejectSuspendAccount()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=test-home-feed");
@@ -300,17 +295,16 @@ namespace manaTest
             var AmountSubmitResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), ConfirmConsentApi);
             if (!AmountSubmitResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             var dialogMessage = await resultTask.Task;
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
-                return true;
-                await page.CloseAsync();
+                return (true, page);
             }
-            return false;
+            return (false, page);
 
             void ResultDlg(object sender, IDialog dialog)
             {
@@ -348,7 +342,6 @@ namespace manaTest
             if (result.status == "Success")
             {
                 return true;
-                await page.CloseAsync();
             }
             return false;
 
@@ -388,7 +381,6 @@ namespace manaTest
             if (result.status == "Success")
             {
                 return true;
-                await page.CloseAsync();
             }
             return false;
 
