@@ -65,14 +65,7 @@ namespace manaTest
             await page.FillAsync("input[name=\"ion-input-2\"]", "1349900417203");
             await page.ClickAsync("button");
             ////// วันเกิด
-            await page.ClickAsync("text=26");
-            await page.ClickAsync("text=25");
-            await page.ClickAsync("text=23");
-            await page.ClickAsync("text=22");
-            await page.ClickAsync("text=20");
-            await page.ClickAsync("text=18");
-            await page.ClickAsync("text=17");
-            await page.ClickAsync("text=15");
+            await page.ClickAsync("text=14");
             await page.ClickAsync("text=13");
             await page.ClickAsync("text=11");
             await page.ClickAsync("text=09");
@@ -82,7 +75,7 @@ namespace manaTest
             await page.ClickAsync("text=02");
             ////////เดือนเกิด
             await page.ClickAsync(":nth-match(ion-picker-column:has-text(\"010203040506070809101112\"), 2)");
-            await page.ClickAsync(":nth-match(:text(\"01\"), 2)");
+            await page.ClickAsync(":nth-match(:text(\"02\"), 2)");
             await page.ClickAsync(":nth-match(:text(\"03\"), 2)");
             await page.ClickAsync(":nth-match(:text(\"05\"), 2)");
             await page.ClickAsync(":nth-match(:text(\"06\"), 2)");
