@@ -14,7 +14,9 @@ namespace backofficeTest_XUnit
 {
     public class Ordering : TestBase
     {
-        ////// Mana
+        /// <summary>
+        /// Mana
+        /// </summary>
         [Fact(DisplayName = "สร้างบัญชีพร้อมเพย์แบบหมายเลขบัตรประชาชนได้")]
         [TestPriority(10)]
         public async Task AddPPayAccountByPID()
@@ -149,7 +151,9 @@ namespace backofficeTest_XUnit
             res.Should().Be(true);
         }
 
-        //BackOffice
+        /// <summary>
+        /// BackOffice
+        /// </summary>
         [Fact(DisplayName = "(Ticket) เบอร์โทรที่ไม่ได้ลงทะเบียนจะต้องไม่สามารถสร้าง Ticket ได้")]
         [TestPriority(100)]
         public async Task InputUnknowPhoneNoThenCanNotCreateNewTicket()
