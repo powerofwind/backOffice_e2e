@@ -10,7 +10,7 @@ namespace manaTest
     {
         
         // ส่ง RTP เพื่อขอเติมเงินไปยังพร้อมเพย์ที่ผูกไว้ได้
-        public async Task<bool> TopUpPPay()
+        public async Task<(bool isSuccess, IPage page)> TopUpPPay()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=https://s.manal.ink/np/nfinanc-home");
@@ -22,7 +22,7 @@ namespace manaTest
             var TopupApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-row:nth-child(2) ion-col:nth-child(1) img"), TopupApi);
             if (!TopupApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             await page.GotoAsync("http://localhost:8100/#/wallet-topup");
@@ -37,7 +37,7 @@ namespace manaTest
             var TopupPPayApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), TopupPPayApi);
             if (!TopupPPayApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             var confirmTask = new TaskCompletionSource<IDialog>();
@@ -53,9 +53,9 @@ namespace manaTest
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
-                return true;
+                return (true, page);
             }
-            return false;
+            return (false, page);
 
             void InputMoneyDlg(object sender, IDialog dialog)
             {
@@ -78,7 +78,7 @@ namespace manaTest
         }
 
         // สร้าง QR เพื่อเติมเงินเข้ากระเป๋าเงิน Mana ได้
-        public async Task<bool> TopUpCreateQR()
+        public async Task<(bool isSuccess, IPage page)> TopUpCreateQR()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=https://s.manal.ink/np/nfinanc-home");
@@ -90,7 +90,7 @@ namespace manaTest
             var TopupApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-row:nth-child(2) ion-col:nth-child(1) img"), TopupApi);
             if (!TopupApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             await page.GotoAsync("http://localhost:8100/#/wallet-topup");
@@ -105,7 +105,7 @@ namespace manaTest
             var TopupBankApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), TopupBankApi);
             if (!TopupBankApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             var confirmTask = new TaskCompletionSource<IDialog>();
@@ -121,9 +121,9 @@ namespace manaTest
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
-                return true;
+                return (true, page);
             }
-            return false;
+            return (false, page);
 
             void InputMoneyDlg(object sender, IDialog dialog)
             {
@@ -146,7 +146,7 @@ namespace manaTest
         }
 
         // ส่ง RTP เพื่อขอเติมเงินไปยังบัญชีธนาคารที่ผูกไว้ได้
-        public async Task<bool> TopUpbanking()
+        public async Task<(bool isSuccess, IPage page)> TopUpbanking()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=https://s.manal.ink/np/nfinanc-home");
@@ -158,7 +158,7 @@ namespace manaTest
             var TopupApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-row:nth-child(2) ion-col:nth-child(1) img"), TopupApi);
             if (!TopupApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             await page.GotoAsync("http://localhost:8100/#/wallet-topup");
@@ -175,7 +175,7 @@ namespace manaTest
             var TopupBankApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("button"), TopupBankApi);
             if (!TopupBankApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             var confirmTask = new TaskCompletionSource<IDialog>();
@@ -191,9 +191,9 @@ namespace manaTest
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
-                return true;
+                return (true, page);
             }
-            return false;
+            return (false, page);
          
             void InputMoneyDlg(object sender, IDialog dialog)
             {

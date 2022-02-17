@@ -10,7 +10,7 @@ namespace manaTest
     {
    
         // สร้างร้านสำหรับ Business ได้
-        public async Task<bool> CreateBusinessShop()
+        public async Task<(bool isSuccess, IPage page)> CreateBusinessShop()
         {
 
             var page = await PageFactory.CreatePage().DoManaLogin();
@@ -28,9 +28,9 @@ namespace manaTest
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
-                return true;
+                return (true, page);
             }
-            return false;
+            return (false, page);
 
             void page_Dialog1_EventHandler(object sender, IDialog dialog)
             {
@@ -42,7 +42,7 @@ namespace manaTest
         }
 
         // ถอนเงินออกจากร้าน Business เข้ากระเป๋าเงิน Mana ได้
-        public async Task<bool> withdrawBusinessShop()
+        public async Task<(bool isSuccess, IPage page)> withdrawBusinessShop()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=https://s.manal.ink/np/nbizdtl-637623474056077116$basic$shop");
@@ -60,7 +60,7 @@ namespace manaTest
             var WithdrawAmountBusinessApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=OK >> button"), WithdrawAmountBusinessApi);
             if (!WithdrawAmountBusinessApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             var confirmTask = new TaskCompletionSource<IDialog>();
@@ -76,9 +76,9 @@ namespace manaTest
             var result = JsonSerializer.Deserialize<ResultDlg>(dialogMessage);
             if (result.status == "Success")
             {
-                return true;
+                return (true, page);
             }
-            return false;
+            return (false, page);
 
             void InputMoneyDlg(object sender, IDialog dialog)
             {
@@ -101,7 +101,7 @@ namespace manaTest
         }
 
         // สร้าง QR ร้าน Business ได้
-        public async Task<bool> CreatQRBusiness()
+        public async Task<(bool isSuccess, IPage page)> CreatQRBusiness()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=https://s.manal.ink/np/nbizdtl-637623474056077116$basic$shop");
@@ -112,7 +112,7 @@ namespace manaTest
             await page.ClickAsync("text=คิวอาร์รับเงิน");
             await page.GotoAsync("http://localhost:8100/#/merchant-qr-receive-money");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            return true;
+            return (true, page);
         }
     }
 }

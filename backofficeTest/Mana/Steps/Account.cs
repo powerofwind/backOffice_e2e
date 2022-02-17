@@ -7,7 +7,7 @@ namespace manaTest
     public class Account
     {
         // สร้างการผูกบัญชีพร้อมเพย์แบบหมายเลขโทรศัพท์ได้
-        public async Task<bool> AddPPayAccountByPhoneNumber()
+        public async Task<(bool isSuccess, IPage page)> AddPPayAccountByPhoneNumber()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=https://s.manal.ink/np/nfinanc-home");
@@ -20,7 +20,7 @@ namespace manaTest
             var AccountApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-row:nth-child(3) ion-col:nth-child(3) img"), AccountApi);
             if (!AccountApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             await page.GotoAsync("http://localhost:8100/#/account-main");
@@ -41,7 +41,7 @@ namespace manaTest
             var CreateAccountPPayApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=OK >> button"), CreateAccountPPayApi);
             if (!CreateAccountPPayApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             await page.GotoAsync("http://localhost:8100/#/account-confirm-ppay");
@@ -51,7 +51,7 @@ namespace manaTest
             var ComfirmCreateAccountPPayApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=OK >> button"), ComfirmCreateAccountPPayApi);
             if (!ComfirmCreateAccountPPayApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
@@ -60,7 +60,7 @@ namespace manaTest
             page.Dialog += page_Dialog3_EventHandler;
             await page.GotoAsync("http://localhost:8100/#/wallet-topup-ppay");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            return true;
+            return (true, page);
 
             void page_Dialog3_EventHandler(object sender, IDialog dialog)
             {
@@ -70,7 +70,7 @@ namespace manaTest
         }
 
         // สร้างการผูกบัญชีพร้อมเพย์แบบหมายเลขบัตรประชาชนได้
-        public async Task<bool> AddPPayAccountByPID()
+        public async Task<(bool isSuccess, IPage page)> AddPPayAccountByPID()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=https://s.manal.ink/np/nfinanc-home");
@@ -83,7 +83,7 @@ namespace manaTest
             var AccountApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-row:nth-child(3) ion-col:nth-child(3) img"), AccountApi);
             if (!AccountApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             await page.GotoAsync("http://localhost:8100/#/account-main");
@@ -104,7 +104,7 @@ namespace manaTest
             var CreateAccountPPayApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=OK >> button"), CreateAccountPPayApi);
             if (!CreateAccountPPayApiResponse.Ok)
             {
-                return false;
+                return (false,page);
             }
 
             await page.GotoAsync("http://localhost:8100/#/account-confirm-ppay");
@@ -114,7 +114,7 @@ namespace manaTest
             var ComfirmCreateAccountPPayApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=OK >> button"), ComfirmCreateAccountPPayApi);
             if (!ComfirmCreateAccountPPayApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
@@ -123,7 +123,7 @@ namespace manaTest
             page.Dialog += page_Dialog3_EventHandler;
             await page.GotoAsync("http://localhost:8100/#/wallet-topup-ppay");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            return true;
+            return (true, page);
 
             void page_Dialog3_EventHandler(object sender, IDialog dialog)
             {
@@ -133,7 +133,7 @@ namespace manaTest
         }
 
         // สร้างการผูกบัญชีธนาคารได้
-        public async Task<bool> AddBankingAccount()
+        public async Task<(bool isSuccess, IPage page)> AddBankingAccount()
         {
             var page = await PageFactory.CreatePage().DoManaLogin();
             await page.GotoAsync("https://localhost:44364/dev/visit?url=https://s.manal.ink/np/nfinanc-home");
@@ -146,7 +146,7 @@ namespace manaTest
             var AccountApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("ion-row:nth-child(3) ion-col:nth-child(3) img"), AccountApi);
             if (!AccountApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             await page.GotoAsync("http://localhost:8100/#/account-main");
@@ -167,7 +167,7 @@ namespace manaTest
             var CreateAccountBankApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=OK >> button"), CreateAccountBankApi);
             if (!CreateAccountBankApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             await page.GotoAsync("http://localhost:8100/#/account-confirm-bankaccount");
@@ -177,7 +177,7 @@ namespace manaTest
             var ComfirmCreateAccountbamkApiResponse = await page.RunAndWaitForResponseAsync(() => page.ClickAsync("text=OK >> button"), ComfirmCreateAccountbamkApi);
             if (!ComfirmCreateAccountbamkApiResponse.Ok)
             {
-                return false;
+                return (false, page);
             }
 
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
@@ -186,7 +186,7 @@ namespace manaTest
             page.Dialog += page_Dialog3_EventHandler;
             await page.GotoAsync("http://localhost:8100/#/wallet-topup-ppay");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            return true;
+            return (true, page);
 
             void page_Dialog3_EventHandler(object sender, IDialog dialog)
             {
