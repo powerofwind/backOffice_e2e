@@ -17,139 +17,139 @@ namespace backofficeTest_XUnit
         /// <summary>
         /// Mana
         /// </summary>
-        [Fact(DisplayName = "สร้างบัญชีพร้อมเพย์แบบหมายเลขบัตรประชาชนได้")]
-        [TestPriority(10)]
-        public async Task AddPPayAccountByPID()
-        {
-            var sut = new Account();
-            var res = await sut.AddPPayAccountByPID();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "สร้างบัญชีพร้อมเพย์แบบหมายเลขบัตรประชาชนได้")]
+        //[TestPriority(10)]
+        //public async Task AddPPayAccountByPID()
+        //{
+        //    var sut = new Account();
+        //    var res = await sut.AddPPayAccountByPID();
+        //    res.Should().Be(true);
+        //}
 
-        [Fact(DisplayName = "สร้างบัญชีพร้อมเพย์แบบหมายเลขโทรศัพท์ได้")]
-        [TestPriority(15)]
-        public async Task AddPPayAccountByPhoneNumber()
-        {
-            var sut = new Account();
-            var res = await sut.AddPPayAccountByPhoneNumber();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "สร้างบัญชีพร้อมเพย์แบบหมายเลขโทรศัพท์ได้")]
+        //[TestPriority(15)]
+        //public async Task AddPPayAccountByPhoneNumber()
+        //{
+        //    var sut = new Account();
+        //    var res = await sut.AddPPayAccountByPhoneNumber();
+        //    res.Should().Be(true);
+        //}
 
-        [Fact(DisplayName = "สร้างบัญชีธนาคารได้")]
-        [TestPriority(20)]
-        public async Task AddBankingAccount()
-        {
-            var sut = new Account();
-            var res = await sut.AddBankingAccount();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "สร้างบัญชีธนาคารได้")]
+        //[TestPriority(20)]
+        //public async Task AddBankingAccount()
+        //{
+        //    var sut = new Account();
+        //    var res = await sut.AddBankingAccount();
+        //    res.Should().Be(true);
+        //}
 
-        [Fact(DisplayName = "ไม่สามารถถอนเงินออกจากกระเป๋าเงิน Mana ผ่านบัญชีพร้อมเพย์ที่ไม่เคยเติมเงินไม่ได้")]
-        [TestPriority(25)]
-        public async Task CannotWithdrawPPayNeverTopup()
-        {
-            var sut = new Withdraw();
-            var res = await sut.CannotWithdrawPPayNeverTopup();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "ไม่สามารถถอนเงินออกจากกระเป๋าเงิน Mana ผ่านบัญชีพร้อมเพย์ที่ไม่เคยเติมเงินไม่ได้")]
+        //[TestPriority(25)]
+        //public async Task CannotWithdrawPPayNeverTopup()
+        //{
+        //    var sut = new Withdraw();
+        //    var res = await sut.CannotWithdrawPPayNeverTopup();
+        //    res.Should().Be(true);
+        //}
 
-        [Fact(DisplayName = "ไม่สามารถถอนเงินออกจากกระเป๋าเงิน Mana ผ่านบัญชีธนาคารไม่เคยเติมเงินไม่ได้")]
-        [TestPriority(30)]
-        public async Task CannotWithdrawBankingNeverTopup()
-        {
-            var sut = new Withdraw();
-            var res = await sut.CannotWithdrawBankingNeverTopup();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "ไม่สามารถถอนเงินออกจากกระเป๋าเงิน Mana ผ่านบัญชีธนาคารไม่เคยเติมเงินไม่ได้")]
+        //[TestPriority(30)]
+        //public async Task CannotWithdrawBankingNeverTopup()
+        //{
+        //    var sut = new Withdraw();
+        //    var res = await sut.CannotWithdrawBankingNeverTopup();
+        //    res.Should().Be(true);
+        //}
 
-        [Fact(DisplayName = "ส่ง RTP เพื่อขอเติมเงินไปยังพร้อมเพย์ที่ผูกไว้ได้")]
-        [TestPriority(35)]
-        public async Task TopUpPPay()
-        {
-            var sut = new Topup();
-            var res = await sut.TopUpPPay();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "ส่ง RTP เพื่อขอเติมเงินไปยังพร้อมเพย์ที่ผูกไว้ได้")]
+        //[TestPriority(35)]
+        //public async Task TopUpPPay()
+        //{
+        //    var sut = new Topup();
+        //    var res = await sut.TopUpPPay();
+        //    res.Should().Be(true);
+        //}
 
-        [Fact(DisplayName = "ส่ง RTP เพื่อขอเติมเงินไปยังบัญชีธนาคารที่ผูกไว้ได้")]
-        [TestPriority(40)]
-        public async Task TopUpbanking()
-        {
-            var sut = new Topup();
-            var res = await sut.TopUpbanking();
-            res.Should().Be(true);
-        }
-        [Fact(DisplayName = "สร้างร้านสำหรับ Business ได้")]
-        [TestPriority(45)]
-        public async Task CreateBusinessShop()
-        {
-            var sut = new BusinessShop();
-            var res = await sut.CreateBusinessShop();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "ส่ง RTP เพื่อขอเติมเงินไปยังบัญชีธนาคารที่ผูกไว้ได้")]
+        //[TestPriority(40)]
+        //public async Task TopUpbanking()
+        //{
+        //    var sut = new Topup();
+        //    var res = await sut.TopUpbanking();
+        //    res.Should().Be(true);
+        //}
+        //[Fact(DisplayName = "สร้างร้านสำหรับ Business ได้")]
+        //[TestPriority(45)]
+        //public async Task CreateBusinessShop()
+        //{
+        //    var sut = new BusinessShop();
+        //    var res = await sut.CreateBusinessShop();
+        //    res.Should().Be(true);
+        //}
 
-        [Fact(DisplayName = "สร้าง QR ร้าน Business ได้")]
-        [TestPriority(50)]
-        public async Task CreatQRBusiness()
-        {
-            var sut = new BusinessShop();
-            var res = await sut.CreatQRBusiness();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "สร้าง QR ร้าน Business ได้")]
+        //[TestPriority(50)]
+        //public async Task CreatQRBusiness()
+        //{
+        //    var sut = new BusinessShop();
+        //    var res = await sut.CreatQRBusiness();
+        //    res.Should().Be(true);
+        //}
 
-        [Fact(DisplayName = "ถอนเงินออกจากร้าน Business เข้ากระเป๋าเงิน Mana ได้")]
-        [TestPriority(55)]
-        public async Task withdrawBusinessShop()
-        {
-            var sut = new BusinessShop();
-            var res = await sut.withdrawBusinessShop();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "ถอนเงินออกจากร้าน Business เข้ากระเป๋าเงิน Mana ได้")]
+        //[TestPriority(55)]
+        //public async Task withdrawBusinessShop()
+        //{
+        //    var sut = new BusinessShop();
+        //    var res = await sut.withdrawBusinessShop();
+        //    res.Should().Be(true);
+        //}
 
-        [Fact(DisplayName = "สร้าง QR เพื่อเติมเงินเข้ากระเป๋าเงิน Mana ได้")]
-        [TestPriority(60)]
-        public async Task TopUpCreateQR()
-        {
-            var sut = new Topup();
-            var res = await sut.TopUpCreateQR();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "สร้าง QR เพื่อเติมเงินเข้ากระเป๋าเงิน Mana ได้")]
+        //[TestPriority(60)]
+        //public async Task TopUpCreateQR()
+        //{
+        //    var sut = new Topup();
+        //    var res = await sut.TopUpCreateQR();
+        //    res.Should().Be(true);
+        //}
 
-        [Fact(DisplayName = "ถอนเงินจากพร้อมเพย์ที่ผูกไว้ได้")]
-        [TestPriority(65)]
-        public async Task WithdrawPPaySuccess()
-        {
-            var sut = new Withdraw();
-            var res = await sut.WithdrawPPaySuccess();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "ถอนเงินจากพร้อมเพย์ที่ผูกไว้ได้")]
+        //[TestPriority(65)]
+        //public async Task WithdrawPPaySuccess()
+        //{
+        //    var sut = new Withdraw();
+        //    var res = await sut.WithdrawPPaySuccess();
+        //    res.Should().Be(true);
+        //}
 
-        [Fact(DisplayName = "ถอนเงินจากบัญชีธนาคารที่ผูกไว้ได้")]
-        [TestPriority(70)]
-        public async Task WithdrawBankingSuccess()
-        {
-            var sut = new Withdraw();
-            var res = await sut.WithdrawBankingSuccess();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "ถอนเงินจากบัญชีธนาคารที่ผูกไว้ได้")]
+        //[TestPriority(70)]
+        //public async Task WithdrawBankingSuccess()
+        //{
+        //    var sut = new Withdraw();
+        //    var res = await sut.WithdrawBankingSuccess();
+        //    res.Should().Be(true);
+        //}
 
-        [Fact(DisplayName = "ถอนเงินออกจากกระเป๋าเงิน Mana ผ่านบัญชีพร้อมเพย์ที่ผูกไว้ไม่ได้ เพราะเงินในบัญชีไม่พอ")]
-        [TestPriority(75)]
-        public async Task NotWithdrawPPayMoneyNotEnough()
-        {
-            var sut = new Withdraw();
-            var res = await sut.NotWithdrawPPayMoneyNotEnough();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "ถอนเงินออกจากกระเป๋าเงิน Mana ผ่านบัญชีพร้อมเพย์ที่ผูกไว้ไม่ได้ เพราะเงินในบัญชีไม่พอ")]
+        //[TestPriority(75)]
+        //public async Task NotWithdrawPPayMoneyNotEnough()
+        //{
+        //    var sut = new Withdraw();
+        //    var res = await sut.NotWithdrawPPayMoneyNotEnough();
+        //    res.Should().Be(true);
+        //}
 
-        [Fact(DisplayName = "ถอนเงินออกจากกระเป๋าเงิน mana ผ่านบัญชีธนาคารที่ผูกไว้ไม่ได้ เพราะเงินไม่พอ")]
-        [TestPriority(80)]
-        public async Task NotWithdrawBankingMoneyNotEnough()
-        {
-            var sut = new Withdraw();
-            var res = await sut.NotWithdrawBankingMoneyNotEnough();
-            res.Should().Be(true);
-        }
+        //[Fact(DisplayName = "ถอนเงินออกจากกระเป๋าเงิน mana ผ่านบัญชีธนาคารที่ผูกไว้ไม่ได้ เพราะเงินไม่พอ")]
+        //[TestPriority(80)]
+        //public async Task NotWithdrawBankingMoneyNotEnough()
+        //{
+        //    var sut = new Withdraw();
+        //    var res = await sut.NotWithdrawBankingMoneyNotEnough();
+        //    res.Should().Be(true);
+        //}
 
         /// <summary>
         /// BackOffice
