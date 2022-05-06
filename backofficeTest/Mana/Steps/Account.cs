@@ -1,6 +1,7 @@
 ﻿using backofficeTest.Helpers;
 using mana_Test.Models;
 using Microsoft.Playwright;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -203,9 +204,16 @@ namespace manaTest
             {
                 return (false, page);
             }
-
             await page.GotoAsync("http://localhost:8100/#/account-main");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            //TODO นับจำนวนบัญชี
+            await page.PauseAsync();
+            var seccond = await page.InnerTextAsync("ion-item");
+            var countSeccond = seccond.Count();
+            //var result = countSeccond - countFisrt;
+            //var res = result == 1 ? true : false;
+
             await page.GotoAsync("https://localhost:44364/dev/visit?url=https://s.manal.ink/externalaccount/add/typelist/neaclst-home");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             await page.GotoAsync("http://localhost:8100/#/account-create-select");
