@@ -20,8 +20,18 @@ namespace backofficeTest_XUnit
         //    res.Should().Be(true);
         //}
 
+        [Fact(DisplayName = "สร้างบัญชีธนาคารที่ไม่มีอยู่จริงไม่ได้")]
+        [TestPriority(100)]
+        public async Task CreateBankAccountFail_NotRealAccountNumber()
+        {
+            var sut = new Account();
+            var result = await sut.AddBankingAccount("E2ETest","0123456789");
+            result.isSuccess.Should().BeTrue();
+            await result.page.CloseAsync();
+        }
+
         [Fact(DisplayName = "สร้างบัญชีธนาคารได้สำเร็จ")]
-        [TestPriority(20)]
+        [TestPriority(200)]
         public async Task CreateBankAccountSuccess()
         {
             var sut = new Account();
@@ -31,18 +41,8 @@ namespace backofficeTest_XUnit
             isTopupPage.Should().BeTrue();
         }
 
-        [Fact(DisplayName = "สร้างบัญชีธนาคารที่ไม่มีอยู่จริงไม่ได้")]
-        [TestPriority(20)]
-        public async Task CreateBankAccountFail_NotRealAccountNumber()
-        {
-            var sut = new Account();
-            var result = await sut.AddBankingAccount("E2ETest","0123456789");
-            result.isSuccess.Should().BeTrue();
-            await result.page.CloseAsync();
-        }
-
         [Fact(DisplayName = "สร้างบัญชีธนาคารซ้ำไม่ได้")]
-        [TestPriority(20)]
+        [TestPriority(300)]
         public async Task CreateBankAccountFail_BankAccounAlreadyExists()
         {
             var sut = new Account();
